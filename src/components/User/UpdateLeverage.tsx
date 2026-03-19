@@ -20,6 +20,7 @@ const allLeverage = [
 function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLeverage: number }) {
     const [updatingLeverage, setUpdatingLeverage] = useState(false);
     const [selectedLeverage, setSelectedLeverage] = useState<string>(currentLeverage?.toString() || "");
+    const [leverage, setLeverage] = useState(currentLeverage);
 
     const handleSubmit = async () => {
         if (!selectedLeverage) {
@@ -32,6 +33,7 @@ function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLe
             const res = await HandleUpdateUserLeverage(userID, Number(selectedLeverage));
             if (res) {
                 toast.success("Leverage updated successfully");
+                setLeverage(res?.leverage)
             }
         } catch (err) {
             console.error("Leverage update failed", err);
@@ -47,7 +49,7 @@ function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLe
 
                 <div className="mt-3">
                     <div className="text-slate-500 text-xs mb-1">Current Leverage</div>
-                    <div className="font-medium text-lg text-primary">1:{currentLeverage}</div>
+                    <div className="font-medium text-lg text-primary">1:{leverage}</div>
                 </div>
 
                 <div className="mt-5">
@@ -72,7 +74,7 @@ function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLe
                         variant="primary"
                         type="button"
                         onClick={handleSubmit}
-                        disabled={updatingLeverage || selectedLeverage === currentLeverage?.toString()}
+                        disabled={updatingLeverage || selectedLeverage === leverage?.toString()}
                         className="w-full"
                     >
                         {updatingLeverage ? "Updating..." : "Update API"}
