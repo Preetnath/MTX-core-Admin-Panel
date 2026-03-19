@@ -9,7 +9,24 @@ const ALLAPI = {
     login: {
         url: `${BaseURL}/auth/login`,
         method: "POST",
-    }
+    },
+
+    //DASHBOARD
+    dashboard: {
+        url: `${BaseURL}/admin/dashboard`,
+        method: "GET",
+    },
+
+    //USERS
+    getUsers: {
+        url: `${BaseURL}/users`,
+        method: "GET",
+    },
+    getSingleUser: {
+        url: `${BaseURL}/users/:id`,
+        method: "GET",
+    },
+
 
 }
 

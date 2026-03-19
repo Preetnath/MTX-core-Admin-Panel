@@ -68,6 +68,7 @@ import Validation from "../pages/Validation";
 import Chart from "../pages/Chart";
 import Slider from "../pages/Slider";
 import ImageZoom from "../pages/ImageZoom";
+import Users from "../pages/Users";
 
 import Layout from "../themes";
 
@@ -82,17 +83,12 @@ function Router() {
           element: <DashboardOverview1 />,
         },
         {
-          path: "dashboard-overview-2",
-          element: <DashboardOverview2 />,
+          path: "users",
+          element: <Users />,
         },
-        {
-          path: "dashboard-overview-3",
-          element: <DashboardOverview3 />,
-        },
-        {
-          path: "dashboard-overview-4",
-          element: <DashboardOverview4 />,
-        },
+
+
+
         {
           path: "categories",
           element: <Categories />,

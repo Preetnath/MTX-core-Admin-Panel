@@ -3,29 +3,13 @@ import { type Menu } from "@/stores/menuSlice";
 const menu: Array<Menu | "divider"> = [
   {
     icon: "Home",
+    pathname: "/dashboard",
     title: "Dashboard",
-    subMenu: [
-      {
-        icon: "Activity",
-        pathname: "/",
-        title: "Overview 1",
-      },
-      {
-        icon: "Activity",
-        pathname: "/dashboard-overview-2",
-        title: "Overview 2",
-      },
-      {
-        icon: "Activity",
-        pathname: "/dashboard-overview-3",
-        title: "Overview 3",
-      },
-      {
-        icon: "Activity",
-        pathname: "/dashboard-overview-4",
-        title: "Overview 4",
-      },
-    ],
+  },
+  {
+    icon: "Users",
+    pathname: "/dashboard/users",
+    title: "Users",
   },
   {
     icon: "ShoppingBag",
@@ -101,7 +85,7 @@ const menu: Array<Menu | "divider"> = [
   },
   {
     icon: "Inbox",
-    pathname: "/inbox",
+    pathname: "/dashboard/inbox",
     title: "Inbox",
   },
   {

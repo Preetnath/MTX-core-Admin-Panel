@@ -4,7 +4,7 @@ import { useHandleError } from "@/utils/useHandleError"
 import { toast } from "react-toastify"
 
 
-type LoginResponse = {
+interface LoginResponse {
     access_token: string,
     user: {
         id: number,
@@ -20,7 +20,6 @@ export const Login = async (email: string, password: string) => {
         method: ALLAPI.login.method,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${access_token}`
         },
         data: {
             email,
