@@ -106,3 +106,80 @@ export const HandleGetSingleUser = async (userID: string) => {
         toast.error(err)
     }
 }
+
+
+
+export const HandleApproveUser = async (userID: string, approvedAmount?: number) => {
+
+    const config = {
+        url: ALLAPI.approveUser.url.replace(":id", userID),
+        method: ALLAPI.approveUser.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            approvedAmount: approvedAmount ? approvedAmount : undefined
+        }
+    }
+    try {
+        const { data: response }: { data: SingleUser } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleRejectUser = async (userID: string, reason: string) => {
+
+    const config = {
+        url: ALLAPI.rejectUser.url.replace(":id", userID),
+        method: ALLAPI.rejectUser.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            reason
+        }
+    }
+    try {
+        const { data: response }: { data: SingleUser } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleUpdateUserLeverage = async (userID: string, leverage: number) => {
+
+    const config = {
+        url: ALLAPI.UpdateUserLeverage.url.replace(":id", userID),
+        method: ALLAPI.UpdateUserLeverage.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            leverage: leverage
+        }
+    }
+    try {
+        const { data: response }: { data: SingleUser } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}

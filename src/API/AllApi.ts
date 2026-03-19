@@ -26,6 +26,18 @@ const ALLAPI = {
         url: `${BaseURL}/users/:id`,
         method: "GET",
     },
+    approveUser: {
+        url: `${BaseURL}/users/:id/approve`,
+        method: "PUT",
+    },
+    rejectUser: {
+        url: `${BaseURL}/users/:id/reject`,
+        method: "PUT",
+    },
+    UpdateUserLeverage: {
+        url: `${BaseURL}/users/:id/leverage`,
+        method: "PUT",
+    },
 
 
 }

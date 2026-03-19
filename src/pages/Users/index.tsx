@@ -7,11 +7,12 @@ import { FormInput, FormSelect } from "@/components/Base/Form";
 import Lucide from "@/components/Base/Lucide";
 import { Dialog, Menu } from "@/components/Base/Headless";
 import Table from "@/components/Base/Table";
-import { HandleGetUsers, UsersData } from "@/API/user";
+import { HandleApproveUser, HandleGetUsers, HandleRejectUser, HandleUpdateUserLeverage, UsersData } from "@/API/user";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ALLAPI from "@/API/AllApi";
 import { ChevronFirst, ChevronLast } from "lucide-react";
+import { toast } from "react-toastify";
 
 const allStatus = [
     {
@@ -56,6 +57,14 @@ function Main() {
     const navigate = useNavigate();
     const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
     const deleteButtonRef = useRef(null);
+
+    const [approveModal, setApproveModal] = useState(false);
+    const [rejectModal, setRejectModal] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+    const [approvedAmount, setApprovedAmount] = useState<number>(0);
+    const [rejectReason, setRejectReason] = useState<string>("");
+    const [approveLoading, setApproveLoading] = useState(false);
+    const [rejectLoading, setRejectLoading] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [userData, setUserData] = useState<UsersData | null>(null);
@@ -122,6 +131,39 @@ function Main() {
         setParams(params);
     };
 
+    const handleApproveUser = async (userID: string, approvedAmount?: number) => {
+        setApproveLoading(true);
+        try {
+            const res = await HandleApproveUser(userID, approvedAmount);
+            if (res) {
+                getUserData();
+                setApproveModal(false);
+            }
+        } catch (err) {
+            console.error("Dashboard data fetch failed", err);
+        } finally {
+            setApproveLoading(false);
+        }
+    };
+
+    const handleRejectUser = async (userID: string, reason: string) => {
+        if (!reason) {
+            toast.error("Please provide a reason for rejection");
+            return;
+        }
+        setRejectLoading(true);
+        try {
+            const res = await HandleRejectUser(userID, reason);
+            if (res) {
+                getUserData();
+                setRejectModal(false);
+            }
+        } catch (err) {
+            console.error("Dashboard data fetch failed", err);
+        } finally {
+            setRejectLoading(false);
+        }
+    };
 
     useEffect(() => {
         setParams((old) => {
@@ -266,28 +308,33 @@ function Main() {
                                         className={clsx([
                                             "box w-56 rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600",
                                             "before:absolute before:inset-y-0 before:left-0 before:my-auto before:block before:h-8 before:w-px before:bg-slate-200 before:dark:bg-darkmode-400",
-                                        ])}
-                                    >
-                                        <div className="flex items-center justify-center">
-                                            <a
-                                                className="flex items-center text-danger"
-                                                href="#"
-                                                onClick={(event) => {
-                                                    event.preventDefault();
-                                                    setDeleteConfirmationModal(true);
-                                                }}
-                                            >
-                                                <Lucide icon="Trash2" className="w-4 h-4 mr-1" />
-                                            </a>
+                                        ])} >
+                                        <div className="flex justify-evenly cursor-pointer" >
+                                            <div onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedUserId(user.id);
+                                                setApprovedAmount(0);
+                                                setApproveModal(true);
+                                            }}>
+                                                <Lucide icon="Check" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="green" />
+                                            </div>
+                                            <div onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedUserId(user.id);
+                                                setRejectReason("");
+                                                setRejectModal(true);
+                                            }}>
+                                                <Lucide icon="X" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="red" />
+                                            </div>
                                         </div>
+
                                     </Table.Td>
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>
                     </Table>
                 </div>
-                {/* END: Data List */}
-                {/* BEGIN: Pagination */}
+
                 <div className="flex flex-wrap mt-5 items-center col-span-12 intro-y sm:flex-row sm:flex-nowrap">
                     {userData?.pagination && (
                         <Pagination className="w-full sm:w-auto sm:mr-auto">
@@ -386,7 +433,6 @@ function Main() {
                         </h1>
                     </div>
                 </div>
-                {/* END: Pagination */}
             </div>
             <Dialog
                 open={deleteConfirmationModal}
@@ -425,6 +471,118 @@ function Main() {
                             ref={deleteButtonRef}
                         >
                             Delete
+                        </Button>
+                    </div>
+                </Dialog.Panel>
+            </Dialog>
+
+            <Dialog
+                open={approveModal}
+                onClose={() => {
+                    setApproveModal(false);
+                }}
+            >
+                <Dialog.Panel>
+                    <div className="p-5 text-center">
+                        <Lucide
+                            icon="CheckCircle"
+                            className="w-16 h-16 mx-auto mt-3 text-success"
+                        />
+                        <div className="mt-5 text-3xl">Approve User</div>
+                        <div className="mt-2 text-slate-500">
+                            Are you sure you want to approve this user?
+                        </div>
+                        <div className="mt-4 text-left">
+                            <label className="text-slate-500 text-sm">Approved Amount (Optional)</label>
+                            <FormInput
+                                type="text"
+                                className="w-full mt-2"
+                                placeholder="Enter approved amount"
+                                value={approvedAmount}
+                                onChange={(e) => setApprovedAmount(Number(e.target.value))}
+                            />
+                        </div>
+                    </div>
+                    <div className="px-5 pb-8 text-center">
+                        <Button
+                            variant="outline-secondary"
+                            type="button"
+                            onClick={() => {
+                                setApproveModal(false);
+                            }}
+                            className="w-24 mr-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="success"
+                            type="button"
+                            className="w-24 text-white"
+                            onClick={() => {
+                                if (selectedUserId) {
+                                    handleApproveUser(selectedUserId, approvedAmount || undefined);
+                                }
+                            }}
+                            disabled={approveLoading}>
+                            {approveLoading ? "Approving..." : "Approve"}
+                        </Button>
+                    </div>
+                </Dialog.Panel>
+            </Dialog>
+
+            <Dialog
+                open={rejectModal}
+                onClose={() => {
+                    setRejectModal(false);
+                }}
+            >
+                <Dialog.Panel>
+                    <div className="p-5 text-center">
+                        <Lucide
+                            icon="XCircle"
+                            className="w-16 h-16 mx-auto mt-3 text-danger"
+                        />
+                        <div className="mt-5 text-3xl">Reject User</div>
+                        <div className="mt-2 text-slate-500">
+                            Please provide a reason to reject this user.
+                        </div>
+                        <div className="mt-4 text-left">
+                            <label className="text-slate-500 text-sm">Rejection Reason *</label>
+                            <FormInput
+                                type="text"
+                                className="w-full mt-2"
+                                placeholder="Enter reason"
+                                value={rejectReason}
+                                onChange={(e) => setRejectReason(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="px-5 pb-8 text-center">
+                        <Button
+                            variant="outline-secondary"
+                            type="button"
+                            onClick={() => {
+                                setRejectModal(false);
+                            }}
+                            className="w-24 mr-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="danger"
+                            type="button"
+                            className="w-24"
+                            onClick={() => {
+                                if (selectedUserId) {
+                                    if (!rejectReason) {
+                                        toast.error("Please provide a reason for rejection");
+                                        return;
+                                    }
+                                    handleRejectUser(selectedUserId, rejectReason);
+                                }
+                            }}
+                            disabled={rejectLoading}>
+                            {rejectLoading ? "Rejecting..." : "Reject"}
                         </Button>
                     </div>
                 </Dialog.Panel>
