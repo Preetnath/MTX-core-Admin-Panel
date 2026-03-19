@@ -37,16 +37,17 @@ interface pagination {
 }
 
 export interface UsersData {
-    users: SingleUser[],
+    data: SingleUser[],
     pagination: pagination
 }
 
 
 
 
-export const HandleGetUsers = async () => {
+export const HandleGetUsers = async (url: string) => {
+
     const config = {
-        url: ALLAPI.getUsers.url,
+        url: url,
         method: ALLAPI.getUsers.method,
         headers: {
             "Content-Type": "application/json",
