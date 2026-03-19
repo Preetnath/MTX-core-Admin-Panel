@@ -34,6 +34,8 @@ export const Login = async (email: string, password: string) => {
         }
     } catch (error) {
         const err = useHandleError(error)
+        console.error(err);
+
         toast.error(err)
     }
 }

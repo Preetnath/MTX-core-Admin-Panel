@@ -1,4 +1,4 @@
-const BaseURL = "https://backend-api.mtxcore.com/api/v1";
+const BaseURL = "https://admin-api-backend.mtxcore.com/api/v1";
 
 export let access_token = localStorage.getItem("token") ?? { token: undefined };
 
