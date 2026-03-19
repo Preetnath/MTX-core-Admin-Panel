@@ -4,6 +4,15 @@ import { useHandleError } from "@/utils/useHandleError"
 import { toast } from "react-toastify"
 import { Broker } from "./broker"
 
+export interface pagination {
+    total: number,
+    page: number,
+    limit: number,
+    currentPage: number,
+    totalPages: number,
+    nextPage: number | null,
+    prevPage: number | null
+}
 
 export interface SingleUser {
     id: string,
@@ -30,23 +39,34 @@ export interface SingleUser {
     investorPassword?: string,
 }
 
-interface pagination {
-    total: number,
-    page: number,
-    limit: number,
-    currentPage: number,
-    totalPages: number,
-    nextPage: number | null,
-    prevPage: number | null
-}
-
 export interface UsersData {
     data: SingleUser[],
     pagination: pagination
 }
 
+export interface Wallet {
+    balance: number,
+    lockedBalance: number,
+    availableBalance: number,
+    currency: string
+}
 
+export interface Transactions {
+    id: string,
+    walletId: string,
+    type: string,
+    amount: number,
+    balanceBefore: number,
+    balanceAfter: number,
+    referenceId: string,
+    description: string,
+    createdAt: string
+}
 
+export interface UserWalletTransactions {
+    transactions: Transactions[],
+    pagination: pagination
+}
 
 export const HandleGetUsers = async (url: string) => {
 
@@ -70,8 +90,6 @@ export const HandleGetUsers = async (url: string) => {
     }
 }
 
-
-
 export const HandleGetSingleUser = async (userID: string) => {
 
     const config = {
@@ -93,8 +111,6 @@ export const HandleGetSingleUser = async (userID: string) => {
         toast.error(err)
     }
 }
-
-
 
 export const HandleApproveUser = async (userID: string, approvedAmount?: number) => {
 
@@ -170,3 +186,100 @@ export const HandleUpdateUserLeverage = async (userID: string, leverage: number)
         toast.error(err)
     }
 }
+
+export const HandleGetUserWallet = async (userID: string) => {
+
+    const config = {
+        url: ALLAPI.getUserWallet.url.replace(":userId", userID),
+        method: ALLAPI.getUserWallet.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: Wallet } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleGetUserWalletTransactions = async (userID: string, page: number) => {
+
+    const config = {
+        url: ALLAPI.getUserWalletTransactions.url.replace(":userId", userID),
+        method: ALLAPI.getUserWalletTransactions.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        params: {
+            page: page
+        }
+    }
+    try {
+        const { data: response }: { data: UserWalletTransactions } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleUserDeposit = async (userID: string, amount: number) => {
+
+    const config = {
+        url: ALLAPI.UserDeposit.url.replace(":userId", userID),
+        method: ALLAPI.UserDeposit.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            amount: amount
+        }
+    }
+    try {
+        const { data: response } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleUserWithdrawal = async (userID: string, amount: number) => {
+    const config = {
+        url: ALLAPI.UserWithdrawal.url.replace(":userId", userID),
+        method: ALLAPI.UserWithdrawal.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            amount: amount
+        }
+    }
+    try {
+        const { data: response } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+

@@ -39,6 +39,23 @@ const ALLAPI = {
         method: "PUT",
     },
 
+    getUserWallet: {
+        url: `${BaseURL}/users/:userId/wallet`,
+        method: "GET",
+    },
+    getUserWalletTransactions: {
+        url: `${BaseURL}/users/:userId/wallet/transactions`,
+        method: "GET",
+    },
+    UserDeposit: {
+        url: `${BaseURL}/users/:userId/wallet/deposit`,
+        method: "POST",
+    },
+    UserWithdrawal: {
+        url: `${BaseURL}/users/:userId/wallet/withdraw`,
+        method: "POST",
+    },
+
     //BROKERS
     getBrokers: {
         url: `${BaseURL}/brokers`,

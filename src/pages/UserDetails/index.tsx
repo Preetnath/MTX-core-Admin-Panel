@@ -5,10 +5,12 @@ import { HandleGetSingleUser, HandleUpdateUserLeverage, SingleUser } from '@/API
 import Lucide from '@/components/Base/Lucide';
 import PersonalDetails from '@/components/User/PersonalDetails';
 import UpdateLeverage from '@/components/User/UpdateLeverage';
+import UserBalance from '@/components/User/UserBalance';
 
 const topTab = [
     "Personal Details",
     "Leverage",
+    "Balance",
     "Spread",
     "Spike",
     "Swip",
@@ -33,7 +35,7 @@ function index() {
                 setUserData(res);
             }
         } catch (err) {
-            console.error("Dashboard data fetch failed", err);
+            console.error("User data fetch failed", err);
         } finally {
             setLoading(false);
         }
@@ -85,6 +87,13 @@ function index() {
                             <p className="text-slate-500">Loading...</p>
                         </div>
                     ) : (userData && <UpdateLeverage userID={userId} currentLeverage={userData?.leverage} />)
+                )}
+                {activeTab === "Balance" && (
+                    loading ? (
+                        <div className="text-center py-10">
+                            <p className="text-slate-500">Loading...</p>
+                        </div>
+                    ) : (userData && <UserBalance userID={userId} />)
                 )}
             </div>
         </div>
