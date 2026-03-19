@@ -2,21 +2,8 @@ import axios from "axios"
 import ALLAPI, { access_token } from "./AllApi"
 import { useHandleError } from "@/utils/useHandleError"
 import { toast } from "react-toastify"
+import { Broker } from "./broker"
 
-
-interface Broker {
-    aboutBroker: string,
-    accessServer: string,
-    createdAt: string,
-    fullForm: string,
-    id: string,
-    isActive: boolean,
-    logo: string,
-    name: string,
-    series: string | null,
-    updatedAt: string,
-    websiteLink: string
-}
 
 export interface SingleUser {
     id: string,

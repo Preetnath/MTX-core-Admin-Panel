@@ -12,6 +12,12 @@ const menu: Array<Menu | "divider"> = [
     title: "Users",
   },
   {
+    icon: "Users",
+    pathname: "/dashboard/brokers",
+    title: "Brokers",
+  },
+
+  {
     icon: "ShoppingBag",
     title: "E-Commerce",
     subMenu: [

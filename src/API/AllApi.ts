@@ -39,7 +39,23 @@ const ALLAPI = {
         method: "PUT",
     },
 
-
+    //BROKERS
+    getBrokers: {
+        url: `${BaseURL}/brokers`,
+        method: "GET",
+    },
+    getSingleBroker: {
+        url: `${BaseURL}/brokers/:id`,
+        method: "GET",
+    },
+    createBroker: {
+        url: `${BaseURL}/brokers`,
+        method: "POST",
+    },
+    updateBroker: {
+        url: `${BaseURL}/brokers/:id`,
+        method: "PUT",
+    },
 }
 
 export default ALLAPI

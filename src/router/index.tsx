@@ -68,8 +68,11 @@ import Validation from "../pages/Validation";
 import Chart from "../pages/Chart";
 import Slider from "../pages/Slider";
 import ImageZoom from "../pages/ImageZoom";
+
+//new 
 import Users from "../pages/Users";
 import UserDetails from "../pages/UserDetails";
+import Brokers from "../pages/Brokers";
 
 import Layout from "../themes";
 
@@ -91,8 +94,10 @@ function Router() {
           path: "user-details",
           element: <UserDetails />,
         },
-
-
+        {
+          path: "brokers",
+          element: <Brokers />,
+        },
 
         {
           path: "categories",
