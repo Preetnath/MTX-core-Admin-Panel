@@ -4,7 +4,21 @@ import { useHandleError } from "@/utils/useHandleError"
 import { toast } from "react-toastify"
 
 
-interface SingleUser {
+interface Broker {
+    aboutBroker: string,
+    accessServer: string,
+    createdAt: string,
+    fullForm: string,
+    id: string,
+    isActive: boolean,
+    logo: string,
+    name: string,
+    series: string | null,
+    updatedAt: string,
+    websiteLink: string
+}
+
+export interface SingleUser {
     id: string,
     firstName: string,
     lastName: string,
@@ -23,7 +37,10 @@ interface SingleUser {
     rejectionReason: string,
     leverage: number,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    broker?: Broker,
+    password?: string,
+    investorPassword?: string,
 }
 
 interface pagination {
@@ -56,6 +73,30 @@ export const HandleGetUsers = async (url: string) => {
     }
     try {
         const { data: response }: { data: UsersData } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+
+
+export const HandleGetSingleUser = async (userID: string) => {
+
+    const config = {
+        url: ALLAPI.getSingleUser.url.replace(":id", userID),
+        method: ALLAPI.getSingleUser.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: SingleUser } = await axios.request(config)
         if (response) {
             return response
         }

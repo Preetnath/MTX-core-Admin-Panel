@@ -69,6 +69,7 @@ import Chart from "../pages/Chart";
 import Slider from "../pages/Slider";
 import ImageZoom from "../pages/ImageZoom";
 import Users from "../pages/Users";
+import UserDetails from "../pages/UserDetails";
 
 import Layout from "../themes";
 
@@ -85,6 +86,10 @@ function Router() {
         {
           path: "users",
           element: <Users />,
+        },
+        {
+          path: "user-details",
+          element: <UserDetails />,
         },
 
 

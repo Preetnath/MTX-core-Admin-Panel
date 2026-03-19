@@ -9,7 +9,7 @@ import { Dialog, Menu } from "@/components/Base/Headless";
 import Table from "@/components/Base/Table";
 import { HandleGetUsers, UsersData } from "@/API/user";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ALLAPI from "@/API/AllApi";
 import { ChevronFirst, ChevronLast } from "lucide-react";
 
@@ -52,6 +52,8 @@ const allAccountType = [
 ]
 
 function Main() {
+
+    const navigate = useNavigate();
     const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
     const deleteButtonRef = useRef(null);
 
@@ -87,8 +89,6 @@ function Main() {
         try {
             const res = await HandleGetUsers(apiUrl);
             if (res) {
-                console.log({ res });
-
                 setUserData(res);
             }
         } catch (err) {
@@ -228,7 +228,9 @@ function Main() {
                                     </Table.Td>
                                 </Table.Tr>
                             ) : userData?.data?.map((user) => (
-                                <Table.Tr key={user.id} className="intro-x">
+                                <Table.Tr key={user.id} className="intro-x" onClick={() => {
+                                    navigate(`/dashboard/user-details?userId=${user.id}`)
+                                }}>
                                     <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
                                         <a href="" className="font-medium whitespace-nowrap">
                                             {user.firstName} {user.lastName}
