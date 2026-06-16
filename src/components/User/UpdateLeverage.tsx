@@ -1,8 +1,8 @@
-import { HandleUpdateUserLeverage } from '@/API/user';
 import React, { useState } from 'react';
 import Button from '@/components/Base/Button';
 import { FormSelect, FormLabel } from '@/components/Base/Form';
 import { toast } from 'react-toastify';
+import { HandleUpdateTraderAccountLeverage } from '@/API/user';
 
 const allLeverage = [
     { label: "1:100", value: "100" },
@@ -17,7 +17,7 @@ const allLeverage = [
     { label: "1:1000", value: "1000" }
 ];
 
-function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLeverage: number }) {
+function UpdateLeverage({ accountId, currentLeverage }: { accountId: string, currentLeverage: number }) {
     const [updatingLeverage, setUpdatingLeverage] = useState(false);
     const [selectedLeverage, setSelectedLeverage] = useState<string>(currentLeverage?.toString() || "");
     const [leverage, setLeverage] = useState(currentLeverage);
@@ -30,7 +30,7 @@ function UpdateLeverage({ userID, currentLeverage }: { userID: string, currentLe
 
         setUpdatingLeverage(true);
         try {
-            const res = await HandleUpdateUserLeverage(userID, Number(selectedLeverage));
+            const res = await HandleUpdateTraderAccountLeverage(accountId, Number(selectedLeverage));
             if (res) {
                 toast.success("Leverage updated successfully");
                 setLeverage(res?.leverage)

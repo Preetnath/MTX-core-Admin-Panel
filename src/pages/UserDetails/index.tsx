@@ -20,28 +20,9 @@ function index() {
     const [params, setParams] = useSearchParams();
     const userId = params.get("userId") as string;
     const accountId = params.get("accountId") as string;
+    const leverage = params.get("leverage") as string;
     const activeTab = params.get("tab") || "Leverage";
 
-    const [userData, setUserData] = useState<SingleUser | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    const getUserData = async () => {
-        setLoading(true);
-        try {
-            const res = await HandleGetSingleUser(userId);
-            if (res) {
-                setUserData(res);
-            }
-        } catch (err) {
-            console.error("User data fetch failed", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getUserData();
-    }, [userId]);
 
     const handleTopTabChange = (value: string) => {
         const newParams = new URLSearchParams(params);
@@ -72,18 +53,10 @@ function index() {
                 <h3 className="text-base font-medium mb-3">{activeTab}</h3>
 
                 {activeTab === "Leverage" && (
-                    loading ? (
-                        <div className="text-center py-10">
-                            <p className="text-slate-500">Loading...</p>
-                        </div>
-                    ) : (userData && <UpdateLeverage userID={userId} currentLeverage={userData?.leverage} />)
+                    <UpdateLeverage accountId={accountId} currentLeverage={Number(leverage)} />
                 )}
                 {activeTab === "Balance" && (
-                    loading ? (
-                        <div className="text-center py-10">
-                            <p className="text-slate-500">Loading...</p>
-                        </div>
-                    ) : (userData && <UserBalance accountId={accountId} />)
+                    <UserBalance accountId={accountId} />
                 )}
             </div>
         </div>

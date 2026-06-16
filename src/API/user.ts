@@ -262,11 +262,11 @@ export const HandleRejectUserTradingAccount = async (userID: string, accountID: 
     }
 }
 
-export const HandleUpdateUserLeverage = async (userID: string, leverage: number) => {
+export const HandleUpdateTraderAccountLeverage = async (accountId: string, leverage: number) => {
 
     const config = {
-        url: ALLAPI.UpdateUserLeverage.url.replace(":id", userID),
-        method: ALLAPI.UpdateUserLeverage.method,
+        url: ALLAPI.UpdateTraderAccountLeverage.url.replace(":id", accountId),
+        method: ALLAPI.UpdateTraderAccountLeverage.method,
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${access_token}`

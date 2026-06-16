@@ -74,8 +74,8 @@ function UserTraderList() {
         fetchUserData();
     }, [userId]);
 
-    const handleRowClick = (accountId: number) => {
-        navigate(`/dashboard/user-details?userId=${userId}&accountId=${accountId}`);
+    const handleRowClick = (accountId: number, leverage: string) => {
+        navigate(`/dashboard/user-details?userId=${userId}&accountId=${accountId}&leverage=${leverage}`);
     };
 
     const handleApprove = async (e: React.MouseEvent, accountId: number) => {
@@ -190,7 +190,7 @@ function UserTraderList() {
                                     <Table.Tr
                                         key={account.id}
                                         className="intro-x cursor-pointer hover:bg-slate-100 dark:hover:bg-darkmode-400 transition-colors"
-                                        onClick={() => handleRowClick(account.id)}
+                                        onClick={() => handleRowClick(account.id, account.leverage.toString())}
                                     >
                                         <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
                                             <div className="font-semibold text-primary whitespace-nowrap">
@@ -263,7 +263,7 @@ function UserTraderList() {
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            handleRowClick(account.id);
+                                                            handleRowClick(account.id, account.leverage.toString());
                                                         }}
                                                         className="flex items-center text-primary font-medium hover:underline"
                                                     >

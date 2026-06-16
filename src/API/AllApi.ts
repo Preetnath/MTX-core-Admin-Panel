@@ -59,12 +59,12 @@ const ALLAPI = {
         url: `${BaseURL}/users/:userId/trader-accounts/:accountId/reject`,
         method: "PUT",
     },
-
-    // TRADING ACCOUNT WALLET
-    UpdateUserLeverage: {
-        url: `${BaseURL}/users/:id/leverage`,
+    UpdateTraderAccountLeverage: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:id`,
         method: "PUT",
     },
+
+    // TRADING ACCOUNT WALLET
     getUserWallet: {
         url: `${BaseURL}/users/:userId/wallet`,
         method: "GET",
