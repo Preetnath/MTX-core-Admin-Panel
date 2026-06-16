@@ -1,8 +1,5 @@
 import { useRoutes } from "react-router-dom";
 import DashboardOverview1 from "../pages/DashboardOverview1";
-import DashboardOverview2 from "../pages/DashboardOverview2";
-import DashboardOverview3 from "../pages/DashboardOverview3";
-import DashboardOverview4 from "../pages/DashboardOverview4";
 import Categories from "../pages/Categories";
 import AddProduct from "../pages/AddProduct";
 import ProductList from "../pages/ProductList";
@@ -73,6 +70,7 @@ import ImageZoom from "../pages/ImageZoom";
 import Users from "../pages/Users";
 import UserDetails from "../pages/UserDetails";
 import Brokers from "../pages/Brokers";
+import Symbols from "../pages/Symbols";
 
 import Layout from "../themes";
 
@@ -86,6 +84,7 @@ function Router() {
           path: "/dashboard",
           element: <DashboardOverview1 />,
         },
+        //new
         {
           path: "users",
           element: <Users />,
@@ -97,6 +96,10 @@ function Router() {
         {
           path: "brokers",
           element: <Brokers />,
+        },
+        {
+          path: "symbols",
+          element: <Symbols />,
         },
 
         {

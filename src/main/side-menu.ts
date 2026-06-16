@@ -16,6 +16,11 @@ const menu: Array<Menu | "divider"> = [
     pathname: "/dashboard/brokers",
     title: "Brokers",
   },
+  {
+    icon: "Activity",
+    pathname: "/dashboard/symbols",
+    title: "Symbols",
+  },
 
   {
     icon: "ShoppingBag",
