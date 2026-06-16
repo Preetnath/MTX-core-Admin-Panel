@@ -17,6 +17,12 @@ const ALLAPI = {
         method: "GET",
     },
 
+    //SYMBOLS
+    getSymbols: {
+        url: `${BaseURL}/symbols`,
+        method: "GET",
+    },
+
     //USERS
     getUsers: {
         url: `${BaseURL}/users`,
@@ -34,11 +40,31 @@ const ALLAPI = {
         url: `${BaseURL}/users/:id/reject`,
         method: "PUT",
     },
+
+
+    // USER TRADING ACCOUNTS
+    getUserTradingAccounts: {
+        url: `${BaseURL}/users/:userId/trader-accounts`,
+        method: "GET",
+    },
+    CreateUserTradingAccount: {
+        url: `${BaseURL}/users/:userId/trader-accounts`,
+        method: "POST",
+    },
+    ApproveUserTradingAccount: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:accountId/approve`,
+        method: "PUT",
+    },
+    RejectUserTradingAccount: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:accountId/reject`,
+        method: "PUT",
+    },
+
+    // TRADING ACCOUNT WALLET
     UpdateUserLeverage: {
         url: `${BaseURL}/users/:id/leverage`,
         method: "PUT",
     },
-
     getUserWallet: {
         url: `${BaseURL}/users/:userId/wallet`,
         method: "GET",

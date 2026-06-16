@@ -162,6 +162,89 @@ export const HandleRejectUser = async (userID: string, reason: string) => {
     }
 }
 
+export const HandleGetUserTradingAccounts = async (userID: string) => {
+    const config = {
+        url: ALLAPI.getUserTradingAccounts.url.replace(":userId", userID),
+        method: ALLAPI.getUserTradingAccounts.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleCreateUserTradingAccount = async (userID: string, data: { accountType: string, accountMode: string, leverage: number, amount: number }) => {
+    const config = {
+        url: ALLAPI.CreateUserTradingAccount.url.replace(":userId", userID),
+        method: ALLAPI.CreateUserTradingAccount.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: data
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+export const HandleApproveUserTradingAccount = async (userID: string, accountID: string) => {
+    const config = {
+        url: ALLAPI.ApproveUserTradingAccount.url.replace(":userId", userID).replace(":accountId", accountID),
+        method: ALLAPI.ApproveUserTradingAccount.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+export const HandleRejectUserTradingAccount = async (userID: string, accountID: string) => {
+    const config = {
+        url: ALLAPI.RejectUserTradingAccount.url.replace(":userId", userID).replace(":accountId", accountID),
+        method: ALLAPI.RejectUserTradingAccount.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
 export const HandleUpdateUserLeverage = async (userID: string, leverage: number) => {
 
     const config = {

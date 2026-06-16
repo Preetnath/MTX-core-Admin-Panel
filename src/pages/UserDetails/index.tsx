@@ -2,7 +2,6 @@ import { useSearchParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { HandleGetSingleUser, HandleUpdateUserLeverage, SingleUser } from '@/API/user';
-import Lucide from '@/components/Base/Lucide';
 import PersonalDetails from '@/components/User/PersonalDetails';
 import UpdateLeverage from '@/components/User/UpdateLeverage';
 import UserBalance from '@/components/User/UserBalance';
