@@ -10,7 +10,7 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
             {userData ? (
                 <div className="grid grid-cols-12 gap-6 mt-5">
                     {/* Basic Info */}
-                    <div className="col-span-12 md:col-span-12 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
+                    <div className="col-span-12 sm:col-span-6 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
                         <h4 className="font-medium text-slate-500 mb-2">Basic Info</h4>
                         <div className="mt-3">
                             <div className="text-slate-500 text-xs">Full Name</div>
@@ -23,6 +23,29 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
                         <div className="mt-3">
                             <div className="text-slate-500 text-xs">Phone</div>
                             <div className="font-medium">{userData?.phone}</div>
+                        </div>
+                        <div className="mt-3">
+                            <div className="text-slate-500 text-xs">Password</div>
+                            <div className="font-medium">{userData.password}</div>
+                        </div>
+                    </div>
+
+                    {/* Account Status */}
+                    <div className="col-span-12 sm:col-span-6 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
+                        <h4 className="font-medium text-slate-500 mb-2">Account Status</h4>
+                        <div className="mt-3">
+                            <div className="text-slate-500 text-xs">Status</div>
+                            <div className={clsx("font-medium", {
+                                "text-success": userData?.accountStatus === 'Active' || userData?.accountStatus === 'VERIFIED',
+                                "text-danger": userData?.accountStatus === 'Inactive' || userData?.accountStatus === 'UNVERIFIED' || userData?.accountStatus === 'REJECTED',
+                                "text-pending": userData?.accountStatus === 'PENDING'
+                            })}>
+                                {userData?.accountStatus}
+                            </div>
+                        </div>
+                        <div className="mt-3">
+                            <div className="text-slate-500 text-xs">KYC Status</div>
+                            <div className="font-medium">{userData?.kycStatus}</div>
                         </div>
                         <div className="mt-4 border-t border-slate-200/60 dark:border-darkmode-400 pt-4">
                             <div className="text-slate-500 text-xs mb-1">Broker Details</div>
@@ -37,50 +60,6 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
                             ) : (
                                 <div className="font-medium text-slate-400">No Broker Linked</div>
                             )}
-                        </div>
-                    </div>
-
-                    {/* Account Status */}
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
-                        <h4 className="font-medium text-slate-500 mb-2">Account Status</h4>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Status</div>
-                            <div className={clsx("font-medium", {
-                                "text-success": userData?.accountStatus === 'Active' || userData?.accountStatus === 'VERIFIED',
-                                "text-danger": userData?.accountStatus === 'Inactive' || userData?.accountStatus === 'UNVERIFIED' || userData?.accountStatus === 'REJECTED',
-                                "text-pending": userData?.accountStatus === 'PENDING'
-                            })}>
-                                {userData?.accountStatus}
-                            </div>
-                        </div>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Account Type</div>
-                            <div className="font-medium">{userData?.accountType}</div>
-                        </div>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">KYC Status</div>
-                            <div className="font-medium">{userData?.kycStatus}</div>
-                        </div>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Leverage</div>
-                            <div className="font-medium">1:{userData?.leverage}</div>
-                        </div>
-                    </div>
-
-                    {/* Security & Broker Details */}
-                    <div className="col-span-12 md:col-span-6 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
-                        <h4 className="font-medium text-slate-500 mb-2">Security & Broker</h4>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Username</div>
-                            <div className="font-medium">{userData?.generatedUsername}</div>
-                        </div>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Password</div>
-                            <div className="font-medium">{userData?.password || "N/A"}</div>
-                        </div>
-                        <div className="mt-3">
-                            <div className="text-slate-500 text-xs">Investor Password</div>
-                            <div className="font-medium">{userData?.investorPassword || "N/A"}</div>
                         </div>
                     </div>
                 </div>
