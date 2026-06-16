@@ -246,7 +246,7 @@ function Main() {
                                     NAME
                                 </Table.Th>
                                 <Table.Th className="border-b-0 whitespace-nowrap">
-                                    USERNAME
+                                    PHONE
                                 </Table.Th>
                                 <Table.Th className="border-b-0 whitespace-nowrap">
                                     EMAIL
@@ -271,7 +271,7 @@ function Main() {
                                 </Table.Tr>
                             ) : userData?.data?.map((user) => (
                                 <Table.Tr key={user.id} className="intro-x" onClick={() => {
-                                    navigate(`/dashboard/user-details?userId=${user.id}`)
+                                    navigate(`/dashboard/user-trader-list?userId=${user.id}`)
                                 }}>
                                     <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
                                         <a href="" className="font-medium whitespace-nowrap">
@@ -280,7 +280,7 @@ function Main() {
                                     </Table.Td>
                                     <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
                                         <div className="text-slate-500 whitespace-nowrap mt-0.5">
-                                            {user.generatedUsername}
+                                            {user.phone}
                                         </div>
                                     </Table.Td>
                                     <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
@@ -294,13 +294,11 @@ function Main() {
                                     <Table.Td className="box w-40 rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
                                         <div
                                             className={clsx([
-                                                "flex items-center justify-center",
-                                                { "text-success": user.accountStatus === "VERIFIED" || user.accountStatus === "ACTIVE" },
-                                                { "text-danger": user.accountStatus === "UNVERIFIED" || user.accountStatus === "REJECTED" || user.accountStatus === "INACTIVE" },
-                                                { "text-pending": user.accountStatus === "PENDING" },
-                                            ])}
-                                        >
-                                            <Lucide icon="CheckSquare" className="w-4 h-4 mr-2" />
+                                                "flex items-center justify-center text-xs",
+                                                { "text-success": user.accountStatus === "APPROVED" || user.accountStatus === "FUNDED" },
+                                                { "text-danger": user.accountStatus === "REJECTED" },
+                                                { "text-warning": user.accountStatus.startsWith("PENDING") },
+                                            ])}>
                                             {user.accountStatus}
                                         </div>
                                     </Table.Td>
@@ -309,24 +307,29 @@ function Main() {
                                             "box w-56 rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600",
                                             "before:absolute before:inset-y-0 before:left-0 before:my-auto before:block before:h-8 before:w-px before:bg-slate-200 before:dark:bg-darkmode-400",
                                         ])} >
-                                        <div className="flex justify-evenly cursor-pointer" >
-                                            <div onClick={(e) => {
-                                                e.stopPropagation();
-                                                setSelectedUserId(user.id);
-                                                setApprovedAmount(0);
-                                                setApproveModal(true);
-                                            }}>
-                                                <Lucide icon="Check" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="green" />
+                                        {user.accountStatus.startsWith("PENDING") ? (
+                                            <div className="flex justify-evenly cursor-pointer" >
+                                                <div onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedUserId(user.id);
+                                                    setApprovedAmount(0);
+                                                    setApproveModal(true);
+                                                }}>
+                                                    <Lucide icon="Check" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="green" />
+                                                </div>
+                                                <div onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedUserId(user.id);
+                                                    setRejectReason("");
+                                                    setRejectModal(true);
+                                                }}>
+                                                    <Lucide icon="X" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="red" />
+                                                </div>
+                                            </div>) : (
+                                            <div className="flex justify-evenly cursor-pointer" >
+                                                ---
                                             </div>
-                                            <div onClick={(e) => {
-                                                e.stopPropagation();
-                                                setSelectedUserId(user.id);
-                                                setRejectReason("");
-                                                setRejectModal(true);
-                                            }}>
-                                                <Lucide icon="X" className="w-4 h-4 mr-1 hover:scale-110 transition-transform" color="red" />
-                                            </div>
-                                        </div>
+                                        )}
 
                                     </Table.Td>
                                 </Table.Tr>

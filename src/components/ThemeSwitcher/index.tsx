@@ -48,15 +48,10 @@ function Main() {
   setDarkModeClass();
 
   const themes: Array<Themes["name"]> = [
-    "rubick",
-    "icewall",
     "tinker",
-    "enigma",
   ];
   const layouts: Array<Themes["layout"]> = [
-    "side-menu",
-    "simple-menu",
-    "top-menu",
+    "side-menu"
   ];
   const colorSchemes: Array<ColorSchemes> = [
     "default",
@@ -107,22 +102,22 @@ function Main() {
                         className={clsx([
                           "h-28 cursor-pointer bg-slate-50 box p-1",
                           activeTheme.name == theme &&
-                            "border-2 border-theme-1/60",
+                          "border-2 border-theme-1/60",
                         ])}
                       >
                         <div className="w-full h-full overflow-hidden rounded-md">
                           {themeImages[
                             `/src/assets/images/themes/${theme}.png`
                           ] !== undefined && (
-                            <img
-                              className="w-full h-full"
-                              src={
-                                themeImages[
-                                  `/src/assets/images/themes/${theme}.png`
-                                ].default
-                              }
-                            />
-                          )}
+                              <img
+                                className="w-full h-full"
+                                src={
+                                  themeImages[
+                                    `/src/assets/images/themes/${theme}.png`
+                                  ].default
+                                }
+                              />
+                            )}
                         </div>
                       </div>
                       <div className="mt-2.5 capitalize text-center text-xs">
@@ -144,24 +139,24 @@ function Main() {
                         className={clsx([
                           "h-24 cursor-pointer bg-slate-50 box p-1",
                           activeTheme.layout == layout &&
-                            "border-2 border-theme-1/60",
+                          "border-2 border-theme-1/60",
                         ])}
                       >
                         <div className="w-full h-full overflow-hidden rounded-md">
                           {layoutImages[
                             `/src/assets/images/layouts/${layout}.png`
                           ] !== undefined && (
-                            <img
-                              className="w-full h-full"
-                              src={
-                                layoutImages[
-                                  "/src/assets/images/layouts/" +
+                              <img
+                                className="w-full h-full"
+                                src={
+                                  layoutImages[
+                                    "/src/assets/images/layouts/" +
                                     layout +
                                     ".png"
-                                ].default
-                              }
-                            />
-                          )}
+                                  ].default
+                                }
+                              />
+                            )}
                         </div>
                       </div>
                       <div className="mt-2.5 capitalize text-center text-xs">
@@ -185,7 +180,7 @@ function Main() {
                         className={clsx([
                           "h-12 cursor-pointer bg-slate-50 box rounded-full p-1 border-slate-300/80",
                           activeColorScheme == colorScheme &&
-                            "border-2 border-theme-1/60",
+                          "border-2 border-theme-1/60",
                         ])}
                       >
                         <div className="h-full overflow-hidden rounded-full">

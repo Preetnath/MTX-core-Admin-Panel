@@ -1,13 +1,11 @@
 import { useSearchParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { HandleGetSingleUser, HandleUpdateUserLeverage, SingleUser } from '@/API/user';
-import PersonalDetails from '@/components/User/PersonalDetails';
+import { HandleGetSingleUser, SingleUser } from '@/API/user';
 import UpdateLeverage from '@/components/User/UpdateLeverage';
 import UserBalance from '@/components/User/UserBalance';
 
 const topTab = [
-    "Personal Details",
     "Leverage",
     "Balance",
     "Spread",
@@ -21,7 +19,8 @@ const topTab = [
 function index() {
     const [params, setParams] = useSearchParams();
     const userId = params.get("userId") as string;
-    const activeTab = params.get("tab") || "Personal Details";
+    const accountId = params.get("accountId") as string;
+    const activeTab = params.get("tab") || "Leverage";
 
     const [userData, setUserData] = useState<SingleUser | null>(null);
     const [loading, setLoading] = useState(false);
@@ -71,14 +70,6 @@ function index() {
 
             <div className="intro-y box p-5">
                 <h3 className="text-base font-medium mb-3">{activeTab}</h3>
-
-                {activeTab === "Personal Details" && (
-                    loading ? (
-                        <div className="text-center py-10">
-                            <p className="text-slate-500">Loading...</p>
-                        </div>
-                    ) : (userData && <PersonalDetails userData={userData} />)
-                )}
 
                 {activeTab === "Leverage" && (
                     loading ? (

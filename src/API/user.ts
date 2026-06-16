@@ -39,6 +39,23 @@ export interface SingleUser {
     investorPassword?: string,
 }
 
+export interface TraderAccount {
+    id: number,
+    generatedUsername: string,
+    passwordHash: string,
+    investorPasswordHash: string,
+    encryptedPassword: string,
+    encryptedInvestorPassword: string,
+    userId: string,
+    accountType: string,
+    accountMode: string,
+    status: string,
+    leverage: number,
+    brokerId: string,
+    spread: number | null,
+    symbolSpreads: string
+}
+
 export interface UsersData {
     data: SingleUser[],
     pagination: pagination
@@ -172,7 +189,7 @@ export const HandleGetUserTradingAccounts = async (userID: string) => {
         }
     }
     try {
-        const { data: response }: { data: any } = await axios.request(config)
+        const { data: response }: { data: TraderAccount[] } = await axios.request(config)
         if (response) {
             return response
         }

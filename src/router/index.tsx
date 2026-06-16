@@ -68,6 +68,7 @@ import ImageZoom from "../pages/ImageZoom";
 
 //new 
 import Users from "../pages/Users";
+import UserTraderList from "../pages/UserTraderList";
 import UserDetails from "../pages/UserDetails";
 import Brokers from "../pages/Brokers";
 import Symbols from "../pages/Symbols";
@@ -88,6 +89,10 @@ function Router() {
         {
           path: "users",
           element: <Users />,
+        },
+        {
+          path: "user-trader-list",
+          element: <UserTraderList />,
         },
         {
           path: "user-details",

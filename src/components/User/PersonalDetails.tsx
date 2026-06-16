@@ -10,7 +10,7 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
             {userData ? (
                 <div className="grid grid-cols-12 gap-6 mt-5">
                     {/* Basic Info */}
-                    <div className="col-span-12 md:col-span-12 lg:col-span-12 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
+                    <div className="col-span-12 md:col-span-12 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
                         <h4 className="font-medium text-slate-500 mb-2">Basic Info</h4>
                         <div className="mt-3">
                             <div className="text-slate-500 text-xs">Full Name</div>
@@ -41,7 +41,7 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
                     </div>
 
                     {/* Account Status */}
-                    <div className="col-span-12 md:col-span-6 lg:col-span-6 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
                         <h4 className="font-medium text-slate-500 mb-2">Account Status</h4>
                         <div className="mt-3">
                             <div className="text-slate-500 text-xs">Status</div>
@@ -68,7 +68,7 @@ function PersonalDetails({ userData }: { userData: SingleUser }) {
                     </div>
 
                     {/* Security & Broker Details */}
-                    <div className="col-span-12 md:col-span-6 lg:col-span-6 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400">
                         <h4 className="font-medium text-slate-500 mb-2">Security & Broker</h4>
                         <div className="mt-3">
                             <div className="text-slate-500 text-xs">Username</div>
