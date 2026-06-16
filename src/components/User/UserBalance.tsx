@@ -11,7 +11,7 @@ import Button from '@/components/Base/Button'
 import { ChevronFirst, ChevronLast } from 'lucide-react'
 import { toast } from 'react-toastify'
 
-function UserBalance({ userID }: { userID: string }) {
+function UserBalance({ accountId }: { accountId: string }) {
 
     const [params, setParams] = useSearchParams()
     const page = Number(params.get("page")) || 1
@@ -29,7 +29,7 @@ function UserBalance({ userID }: { userID: string }) {
     const getUserWallet = async () => {
         setLoading(true)
         try {
-            const res = await HandleGetUserWallet(userID)
+            const res = await HandleGetUserWallet(accountId)
             if (res) {
                 setWallet(res)
             }
@@ -43,7 +43,7 @@ function UserBalance({ userID }: { userID: string }) {
     const getUserWalletTransactions = async () => {
         setLoadingTransactions(true)
         try {
-            const res = await HandleGetUserWalletTransactions(userID, page)
+            const res = await HandleGetUserWalletTransactions(accountId, page)
             if (res) {
                 setTransactions(res?.transactions)
                 setPageData(res?.pagination)
@@ -62,7 +62,7 @@ function UserBalance({ userID }: { userID: string }) {
         }
         setLoading(true)
         try {
-            const res = await HandleUserDeposit(userID, amount)
+            const res = await HandleUserDeposit(accountId, amount)
             if (res) {
                 getUserWallet()
                 getUserWalletTransactions()
@@ -82,7 +82,7 @@ function UserBalance({ userID }: { userID: string }) {
         }
         setLoading(true)
         try {
-            const res = await HandleUserWithdrawal(userID, amount)
+            const res = await HandleUserWithdrawal(accountId, amount)
             if (res) {
                 getUserWallet()
                 getUserWalletTransactions()
@@ -96,14 +96,14 @@ function UserBalance({ userID }: { userID: string }) {
     }
 
     useEffect(() => {
-        if (!userID) return
+        if (!accountId) return
         getUserWallet()
-    }, [userID])
+    }, [accountId])
 
     useEffect(() => {
-        if (!userID) return
+        if (!accountId) return
         getUserWalletTransactions()
-    }, [userID, page])
+    }, [accountId, page])
 
     return (
         <div className="mt-5">

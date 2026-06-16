@@ -83,7 +83,7 @@ function index() {
                         <div className="text-center py-10">
                             <p className="text-slate-500">Loading...</p>
                         </div>
-                    ) : (userData && <UserBalance userID={userId} />)
+                    ) : (userData && <UserBalance accountId={accountId} />)
                 )}
             </div>
         </div>
