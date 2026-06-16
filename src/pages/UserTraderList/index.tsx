@@ -206,7 +206,7 @@ function UserTraderList() {
                                             </div>
                                         </Table.Td>
                                         <Table.Td className="box rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">
-                                            <div className="font-medium whitespace-nowrap capitalize">{account.accountType}</div>
+                                            <div className={`font-medium whitespace-nowrap capitalize ${account.accountType === "DEMO" ? "text-warning" : "text-success"}`}>{account.accountType}</div>
                                             <div className="text-xs text-slate-400 mt-0.5 capitalize">{account.accountMode}</div>
                                         </Table.Td>
                                         <Table.Td className="box text-right rounded-l-none rounded-r-none border-x-0 shadow-[5px_3px_5px_#00000005] first:rounded-l-[0.6rem] first:border-l last:rounded-r-[0.6rem] last:border-r dark:bg-darkmode-600">

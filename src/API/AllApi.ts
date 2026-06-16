@@ -47,6 +47,10 @@ const ALLAPI = {
         url: `${BaseURL}/users/:userId/trader-accounts`,
         method: "GET",
     },
+    getUserSingleTradingAccounts: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:accountId`,
+        method: "GET",
+    },
     CreateUserTradingAccount: {
         url: `${BaseURL}/users/:userId/trader-accounts`,
         method: "POST",

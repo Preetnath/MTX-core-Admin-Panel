@@ -53,7 +53,9 @@ export interface TraderAccount {
     leverage: number,
     brokerId: string,
     spread: number | null,
-    symbolSpreads: string
+    symbolSpreads: string,
+    password?: string,
+    investorPassword?: string
 }
 
 export interface UsersData {
@@ -190,6 +192,27 @@ export const HandleGetUserTradingAccounts = async (userID: string) => {
     }
     try {
         const { data: response }: { data: TraderAccount[] } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleGetSingleUserTradingAccount = async (userID: string, accountID: string) => {
+    const config = {
+        url: ALLAPI.getUserSingleTradingAccounts.url.replace(":userId", userID).replace(":accountId", accountID),
+        method: ALLAPI.getUserSingleTradingAccounts.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: TraderAccount } = await axios.request(config)
         if (response) {
             return response
         }
