@@ -5,14 +5,16 @@ import { HandleGetSingleUser, HandleGetSingleUserTradingAccount, SingleUser, Tra
 import UpdateLeverage from '@/components/User/UpdateLeverage';
 import UserBalance from '@/components/User/UserBalance';
 import TraderAccountDetails from '@/components/User/TraderAccountDetails';
+import TraderSpreadUpdate from '@/components/User/TraderSpreadUpdate';
+import Pendingtrades from '@/components/User/Pendingtrades';
 
 const topTab = [
     "Info",
     "Leverage",
     "Balance",
     "Spread",
-    "Spike",
-    "Swip",
+    "Pending",
+    "Swap",
     "Commission",
     "Trade",
     "Wallet",
@@ -103,6 +105,24 @@ function index() {
                         </div>
                     ) : (
                         <UserBalance accountId={accountId} />
+                    )
+                )}
+                {activeTab === "Spread" && (
+                    loading ? (
+                        <div className="text-center py-10">
+                            <p className="text-slate-500">Loading...</p>
+                        </div>
+                    ) : (
+                        <TraderSpreadUpdate accountId={accountId} initialSpreads={userData?.symbolSpreads} />
+                    )
+                )}
+                {activeTab === "Pending" && (
+                    loading ? (
+                        <div className="text-center py-10">
+                            <p className="text-slate-500">Loading...</p>
+                        </div>
+                    ) : (
+                        <Pendingtrades accountId={accountId} />
                     )
                 )}
             </div>

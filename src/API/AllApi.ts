@@ -67,6 +67,11 @@ const ALLAPI = {
         url: `${BaseURL}/users/:userId/trader-accounts/:id`,
         method: "PUT",
     },
+    UpdateTraderAccountSpread: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:id`,
+        method: "PUT",
+    },
+
 
     // TRADING ACCOUNT WALLET
     getUserWallet: {
@@ -84,6 +89,17 @@ const ALLAPI = {
     UserWithdrawal: {
         url: `${BaseURL}/users/:userId/wallet/withdraw`,
         method: "POST",
+    },
+
+
+    //TRADES
+    getTraderPendingTrades: {
+        url: `${BaseURL}/users/:userId/orders`,
+        method: "GET",
+    },
+    updateTraderTrades: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:traderAccountId/positions/:posiId`,
+        method: "PUT",
     },
 
     //BROKERS

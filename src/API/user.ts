@@ -8,7 +8,6 @@ export interface pagination {
     total: number,
     page: number,
     limit: number,
-    currentPage: number,
     totalPages: number,
     nextPage: number | null,
     prevPage: number | null
@@ -53,9 +52,9 @@ export interface TraderAccount {
     leverage: number,
     brokerId: string,
     spread: number | null,
-    symbolSpreads: string,
+    symbolSpreads: null | Record<string, number>,
     password?: string,
-    investorPassword?: string
+    investorPassword?: string,
 }
 
 export interface UsersData {
@@ -84,6 +83,34 @@ export interface Transactions {
 
 export interface UserWalletTransactions {
     transactions: Transactions[],
+    pagination: pagination
+}
+
+
+export interface SingleOrder {
+    id: string,
+    traderAccountId: number,
+    symbol: string,
+    side: string,
+    orderType: string,
+    lot: string,
+    price: string,
+    leverage: number,
+    status: string,
+    filledAmount: string,
+    averageFillPrice: null,
+    marginRequired: string,
+    takeProfit: null,
+    stopLoss: null,
+    closeExisting: false,
+    closePositionId: null,
+    createdAt: string,
+    updatedAt: string,
+    filledAt: null
+}
+
+export interface PendingTrades {
+    data: SingleOrder[],
     pagination: pagination
 }
 
@@ -244,6 +271,7 @@ export const HandleCreateUserTradingAccount = async (userID: string, data: { acc
         toast.error(err)
     }
 }
+
 export const HandleApproveUserTradingAccount = async (userID: string, accountID: string) => {
     const config = {
         url: ALLAPI.ApproveUserTradingAccount.url.replace(":userId", userID).replace(":accountId", accountID),
@@ -264,6 +292,7 @@ export const HandleApproveUserTradingAccount = async (userID: string, accountID:
         toast.error(err)
     }
 }
+
 export const HandleRejectUserTradingAccount = async (userID: string, accountID: string) => {
     const config = {
         url: ALLAPI.RejectUserTradingAccount.url.replace(":userId", userID).replace(":accountId", accountID),
@@ -299,7 +328,30 @@ export const HandleUpdateTraderAccountLeverage = async (accountId: string, lever
         }
     }
     try {
-        const { data: response }: { data: SingleUser } = await axios.request(config)
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleUpdateTraderAccountSpread = async (accountId: string, data: object) => {
+
+    const config = {
+        url: ALLAPI.UpdateTraderAccountSpread.url.replace(":id", accountId),
+        method: ALLAPI.UpdateTraderAccountSpread.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: data
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
         if (response) {
             return response
         }
@@ -405,4 +457,54 @@ export const HandleUserWithdrawal = async (userID: string, amount: number) => {
         toast.error(err)
     }
 }
+
+export const HandleGetTraderPendingTrades = async (accountId: string, page: number = 1) => {
+    const config = {
+        url: ALLAPI.getTraderPendingTrades.url.replace(":userId", accountId),
+        method: ALLAPI.getTraderPendingTrades.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        params: { page }
+    }
+    try {
+        const { data: response }: { data: PendingTrades } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
+
+export const HandleUpdateSymbolSwap = async (userId: string, traderAccountId: string, posiId: string, swap: number) => {
+    const config = {
+        url: ALLAPI.updateTraderTrades.url
+            .replace(":userId", userId)
+            .replace(":traderAccountId", traderAccountId)
+            .replace(":posiId", posiId),
+        method: ALLAPI.updateTraderTrades.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            swap
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+};
+
 

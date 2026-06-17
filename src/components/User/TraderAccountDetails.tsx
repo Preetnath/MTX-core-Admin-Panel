@@ -1,4 +1,3 @@
-import React from 'react';
 import { TraderAccount } from '@/API/user';
 import clsx from 'clsx';
 
@@ -51,10 +50,6 @@ function TraderAccountDetails({ accountData }: { accountData: TraderAccount }) {
                 <div className="mt-3">
                     <div className="text-slate-500 text-xs">Spread</div>
                     <div className="font-medium">{accountData?.spread ?? "--"}</div>
-                </div>
-                <div className="mt-3">
-                    <div className="text-slate-500 text-xs">Symbol Spreads</div>
-                    <div className="font-medium text-xs truncate" title={accountData?.symbolSpreads}>{accountData?.symbolSpreads || "--"}</div>
                 </div>
             </div>
 
