@@ -114,6 +114,37 @@ export interface PendingTrades {
     pagination: pagination
 }
 
+
+export interface singleUserTradeHistory {
+    id: string,
+    symbol: string,
+    side: string,
+    lot: number,
+    openPrice: number,
+    currentPrice: number,
+    openTime: string,
+    closeTime: string,
+    sl: null,
+    tp: null,
+    profit: number,
+    swap: number,
+    status: string
+}
+
+export interface TraderTradeHistory {
+    data: singleUserTradeHistory[],
+    pagination: {
+        totalItems: number,
+        itemCount: number,
+        itemsPerPage: number,
+        totalPages: number,
+        currentPage: number,
+        page: number,
+        nextPage: null | number,
+        prevPage: null | number
+    }
+}
+
 export const HandleGetUsers = async (url: string) => {
 
     const config = {
@@ -507,4 +538,42 @@ export const HandleUpdateSymbolSwap = async (userId: string, traderAccountId: st
     }
 };
 
-
+export const HandleGetTraderTradeHistory = async (
+    userId: string,
+    traderAccountId: string,
+    period?: string,
+    startDate?: string,
+    endDate?: string,
+    sortBy?: string,
+    sortOrder?: string,
+    page?: string
+) => {
+    const config = {
+        url: ALLAPI.getTraderTradeHistory.url
+            .replace(":userId", userId)
+            .replace(":traderAccountId", traderAccountId),
+        method: ALLAPI.getTraderTradeHistory.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        params: {
+            period, //today ,week , month , 3months , custom
+            startDate, // required if period is custom
+            endDate, // required if period is custom
+            sortBy, // data , name , type, profit, loss
+            sortOrder, // ASC , DESC
+            page // number
+        }
+    }
+    try {
+        const { data: response }: { data: TraderTradeHistory } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}

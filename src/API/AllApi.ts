@@ -102,6 +102,12 @@ const ALLAPI = {
         method: "PUT",
     },
 
+    //TRADE HISTORY 
+    getTraderTradeHistory: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:traderAccountId/positions/history`,
+        method: "GET",
+    },
+
     //BROKERS
     getBrokers: {
         url: `${BaseURL}/brokers`,
