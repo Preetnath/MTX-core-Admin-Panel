@@ -1,4 +1,5 @@
 const BaseURL = "https://admin-api-backend.mtxcore.com/api/v1";
+export const LiveTradesSocket = "https://admin-api-backend.mtxcore.com/admin";
 
 export let access_token = localStorage.getItem("token") ?? { token: undefined };
 

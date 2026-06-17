@@ -8,12 +8,14 @@ import TraderAccountDetails from '@/components/User/TraderAccountDetails';
 import TraderSpreadUpdate from '@/components/User/TraderSpreadUpdate';
 import Pendingtrades from '@/components/User/Pendingtrades';
 import TraderAccountHistory from '@/components/User/TraderAccountHistory';
+import LiveTrades from '@/components/User/LiveTrades';
 
 const topTab = [
     "Info",
     "Leverage",
     "Balance",
     "Spread",
+    "Live Trade",
     "Pending",
     "History",
     "Commission",
@@ -116,6 +118,9 @@ function index() {
                     ) : (
                         <TraderSpreadUpdate accountId={accountId} initialSpreads={userData?.symbolSpreads} />
                     )
+                )}
+                {activeTab === "Live Trade" && (
+                    <LiveTrades accountId={accountId} />
                 )}
                 {activeTab === "Pending" && (
                     loading ? (
