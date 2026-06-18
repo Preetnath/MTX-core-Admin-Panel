@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { HandleGetTraderTradeHistory, TraderTradeHistory, singleUserTradeHistory } from '@/API/user';
+import { HandleGetTraderTradeHistory, TraderTradeHistory, singleUserTradeHistory, HandleUpdateSymbolSwap } from '@/API/user';
 import Table from '@/components/Base/Table';
 import Lucide from '@/components/Base/Lucide';
 import Pagination from '@/components/Base/Pagination';
 import { ChevronFirst, ChevronLast } from 'lucide-react';
 import clsx from 'clsx';
 import { FormSelect, FormInput, FormLabel } from '@/components/Base/Form';
+import { Dialog } from '@/components/Base/Headless';
+import Button from '@/components/Base/Button';
+import { toast } from 'react-toastify';
 
 function TraderAccountHistory({ accountId }: { accountId: string }) {
     const [params] = useSearchParams();
@@ -24,6 +27,41 @@ function TraderAccountHistory({ accountId }: { accountId: string }) {
     const [historyData, setHistoryData] = useState<singleUserTradeHistory[]>([]);
     const [pagination, setPagination] = useState<TraderTradeHistory['pagination'] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // Swap update modal states
+    const [swapModalOpen, setSwapModalOpen] = useState(false);
+    const [selectedTrade, setSelectedTrade] = useState<singleUserTradeHistory | null>(null);
+    const [swap, setSwap] = useState<number>(0);
+    const [updatingSwap, setUpdatingSwap] = useState(false);
+
+    const handleOpenSwapModal = (trade: singleUserTradeHistory) => {
+        setSelectedTrade(trade);
+        setSwap(trade.swap || 0);
+        setSwapModalOpen(true);
+    };
+
+    const handleSaveSwap = async () => {
+        if (!selectedTrade) return;
+        setUpdatingSwap(true);
+        try {
+            const res = await HandleUpdateSymbolSwap(
+                userId,
+                accountId,
+                selectedTrade.id,
+                Math.round(swap)
+            );
+            if (res) {
+                toast.success(`Swap updated successfully to ${Math.round(swap)}`);
+                setSwapModalOpen(false);
+                getHistory();
+            }
+        } catch (err) {
+            console.error("Failed to update swap", err);
+            toast.error("Failed to update swap");
+        } finally {
+            setUpdatingSwap(false);
+        }
+    };
 
     const getHistory = async () => {
         if (!userId || !accountId) return;
@@ -163,7 +201,7 @@ function TraderAccountHistory({ accountId }: { accountId: string }) {
                             {historyData.map((trade) => (
                                 <Table.Tr key={trade.id} className="intro-x">
                                     <Table.Td className="box rounded-[0.6rem] border border-slate-200/60 dark:border-darkmode-400 shadow-[5px_3px_5px_#00000005] dark:bg-darkmode-600 p-5">
-                                        <div className="flex flex-col space-y-4">
+                                        <div className="flex flex-col space-y-3">
                                             {/* Top Row */}
                                             <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-100 dark:border-darkmode-400/50">
                                                 <div className="flex flex-wrap items-center justify-between w-full">
@@ -212,7 +250,7 @@ function TraderAccountHistory({ accountId }: { accountId: string }) {
                                             </div>
 
                                             {/* Details Row */}
-                                            <div className="flex flex-wrap gap-x-8 gap-y-2 text-xs">
+                                            <div className="flex flex-wrap items-start gap-x-8 gap-y-2 text-xs w-full">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-slate-500 dark:text-slate-400 font-medium">Open Price:</span>
                                                     <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">{trade.openPrice}</span>
@@ -234,6 +272,17 @@ function TraderAccountHistory({ accountId }: { accountId: string }) {
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-slate-500 dark:text-slate-400 font-medium">Status:</span>
                                                     <span className="capitalize font-semibold text-slate-700 dark:text-slate-300">{trade.status?.toLowerCase()}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 ml-auto">
+                                                    <Button
+                                                        variant="outline-primary"
+                                                        size="sm"
+                                                        className="inline-flex items-center gap-1.5 hover:bg-primary transition-all shadow-sm font-medium"
+                                                        onClick={() => handleOpenSwapModal(trade)}
+                                                    >
+                                                        <Lucide icon="RefreshCw" className="w-3.5 h-3.5" />
+                                                        Update Swap
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,6 +371,63 @@ function TraderAccountHistory({ accountId }: { accountId: string }) {
                     </div>
                 </div>
             )}
+
+            {/* Update Swap Modal */}
+            <Dialog
+                open={swapModalOpen}
+                onClose={() => {
+                    setSwapModalOpen(false);
+                }}
+            >
+                <Dialog.Panel>
+                    <div className="p-5 text-center">
+                        <Lucide
+                            icon="RefreshCw"
+                            className="w-16 h-16 mx-auto mt-3 text-primary"
+                        />
+                        <div className="mt-5 text-3xl font-semibold">Update Swap Settings</div>
+                        <div className="mt-2 text-slate-500">
+                            Update swap charges for symbol <span className="text-primary font-bold">{selectedTrade?.symbol}</span>
+                        </div>
+
+                        <div className="mt-6 text-left space-y-4">
+                            <div>
+                                <FormLabel htmlFor="swap" className="text-slate-500 font-medium">Swap Value</FormLabel>
+                                <FormInput
+                                    id="swap"
+                                    type="number"
+                                    step="1"
+                                    className="w-full mt-1.5 font-mono"
+                                    placeholder="Enter Swap Integer value"
+                                    value={swap}
+                                    onChange={(e) => setSwap(Number(e.target.value))}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="px-5 pb-8 text-center">
+                        <Button
+                            variant="outline-secondary"
+                            type="button"
+                            onClick={() => {
+                                setSwapModalOpen(false);
+                            }}
+                            className="w-24 mr-2"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="button"
+                            className="w-32 text-white"
+                            onClick={() => handleSaveSwap()}
+                            disabled={updatingSwap}
+                        >
+                            {updatingSwap ? "Saving..." : "Save Swap"}
+                        </Button>
+                    </div>
+                </Dialog.Panel>
+            </Dialog>
         </div>
     );
 }

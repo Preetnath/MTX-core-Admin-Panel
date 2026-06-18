@@ -72,6 +72,10 @@ const ALLAPI = {
         url: `${BaseURL}/users/:userId/trader-accounts/:id`,
         method: "PUT",
     },
+    CleanTraderAccount: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:accountId/clean`,
+        method: "DELETE",
+    },
 
 
     // TRADING ACCOUNT WALLET

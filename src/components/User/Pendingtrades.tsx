@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { HandleGetTraderPendingTrades, SingleOrder, pagination, HandleUpdateSymbolSwap } from '@/API/user';
+import { HandleGetTraderPendingTrades, SingleOrder, pagination } from '@/API/user';
 import Table from '@/components/Base/Table';
 import Lucide from '@/components/Base/Lucide';
 import Pagination from '@/components/Base/Pagination';
 import { ChevronFirst, ChevronLast } from 'lucide-react';
 import clsx from 'clsx';
-import { Dialog } from '@/components/Base/Headless';
-import { FormInput, FormLabel } from '@/components/Base/Form';
-import Button from '@/components/Base/Button';
-import { toast } from 'react-toastify';
 
 function Pendingtrades({ accountId }: { accountId: string }) {
     const [params, setParams] = useSearchParams();
@@ -18,12 +14,6 @@ function Pendingtrades({ accountId }: { accountId: string }) {
     const [orders, setOrders] = useState<SingleOrder[]>([]);
     const [pageData, setPageData] = useState<pagination | null>(null);
     const [loading, setLoading] = useState(false);
-
-    // Swap update modal states
-    const [swapModalOpen, setSwapModalOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<SingleOrder | null>(null);
-    const [swap, setSwap] = useState<number>(0);
-    const [updatingSwap, setUpdatingSwap] = useState(false);
 
     const getPendingTrades = async () => {
         if (!accountId) return;
@@ -44,38 +34,6 @@ function Pendingtrades({ accountId }: { accountId: string }) {
     useEffect(() => {
         getPendingTrades();
     }, [accountId, page]);
-
-    const handleOpenSwapModal = (order: SingleOrder) => {
-        setSelectedOrder(order);
-        setSwap((order as any).swap || 0);
-        setSwapModalOpen(true);
-    };
-
-    const handleSaveSwap = async () => {
-        if (!selectedOrder) return;
-        setUpdatingSwap(true);
-        try {
-            const userId = params.get("userId") || "";
-            const res = await HandleUpdateSymbolSwap(
-                userId,
-                selectedOrder.traderAccountId.toString(),
-                selectedOrder.id,
-                Math.round(swap)
-            );
-            if (res) {
-                toast.success(`Swap updated successfully to ${Math.round(swap)}`);
-                setSwapModalOpen(false);
-                getPendingTrades();
-            }
-        } catch (err) {
-            console.error("Failed to update swap", err);
-            toast.error("Failed to update swap");
-        } finally {
-            setUpdatingSwap(false);
-        }
-    };
-
-
 
     return (
         <div className="mt-5">
@@ -126,17 +84,6 @@ function Pendingtrades({ accountId }: { accountId: string }) {
                                                     <div>
                                                         <div className="text-[10px] text-slate-400 uppercase font-medium">Date</div>
                                                         <div className="text-slate-500 text-xs mt-0.5">{new Date(order.createdAt).toLocaleString()}</div>
-                                                    </div>
-                                                    <div>
-                                                        <Button
-                                                            variant="outline-primary"
-                                                            size="sm"
-                                                            className="inline-flex items-center gap-1.5 hover:bg-primary hover:text-white transition-all shadow-sm font-medium"
-                                                            onClick={() => handleOpenSwapModal(order)}
-                                                        >
-                                                            <Lucide icon="RefreshCw" className="w-3.5 h-3.5" />
-                                                            Update Swap
-                                                        </Button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,63 +209,6 @@ function Pendingtrades({ accountId }: { accountId: string }) {
                     </div>
                 </div>
             )}
-
-            {/* Update Swap Modal */}
-            <Dialog
-                open={swapModalOpen}
-                onClose={() => {
-                    setSwapModalOpen(false);
-                }}
-            >
-                <Dialog.Panel>
-                    <div className="p-5 text-center">
-                        <Lucide
-                            icon="RefreshCw"
-                            className="w-16 h-16 mx-auto mt-3 text-primary"
-                        />
-                        <div className="mt-5 text-3xl font-semibold">Update Swap Settings</div>
-                        <div className="mt-2 text-slate-500">
-                            Update swap charges for symbol <span className="text-primary font-bold">{selectedOrder?.symbol}</span>
-                        </div>
-
-                        <div className="mt-6 text-left space-y-4">
-                            <div>
-                                <FormLabel htmlFor="swap" className="text-slate-500 font-medium">Swap Value</FormLabel>
-                                <FormInput
-                                    id="swap"
-                                    type="number"
-                                    step="1"
-                                    className="w-full mt-1.5 font-mono"
-                                    placeholder="Enter Swap Integer value"
-                                    value={swap}
-                                    onChange={(e) => setSwap(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="px-5 pb-8 text-center">
-                        <Button
-                            variant="outline-secondary"
-                            type="button"
-                            onClick={() => {
-                                setSwapModalOpen(false);
-                            }}
-                            className="w-24 mr-2"
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="primary"
-                            type="button"
-                            className="w-32 text-white"
-                            onClick={() => handleSaveSwap()}
-                            disabled={updatingSwap}
-                        >
-                            {updatingSwap ? "Saving..." : "Save Swap"}
-                        </Button>
-                    </div>
-                </Dialog.Panel>
-            </Dialog>
         </div>
     );
 }

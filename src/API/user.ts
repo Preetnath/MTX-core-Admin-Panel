@@ -324,6 +324,26 @@ export const HandleApproveUserTradingAccount = async (userID: string, accountID:
     }
 }
 
+export const HandleCleanUserTradingAccount = async (userID: string, accountID: string) => {
+    const config = {
+        url: ALLAPI.CleanTraderAccount.url.replace(":userId", userID).replace(":accountId", accountID),
+        method: ALLAPI.CleanTraderAccount.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}
 export const HandleRejectUserTradingAccount = async (userID: string, accountID: string) => {
     const config = {
         url: ALLAPI.RejectUserTradingAccount.url.replace(":userId", userID).replace(":accountId", accountID),
