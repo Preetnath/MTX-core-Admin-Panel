@@ -577,3 +577,63 @@ export const HandleGetTraderTradeHistory = async (
         toast.error(err)
     }
 }
+
+
+
+export const HandleUpdateActiveTrade = async (userId: string, traderAccountId: string, posiId: string, entryPrice?: number, takeProfit?: number, stopLoss?: number, swap?: number) => {
+    const config = {
+        url: ALLAPI.updateTraderTrades.url
+            .replace(":userId", userId)
+            .replace(":traderAccountId", traderAccountId)
+            .replace(":posiId", posiId),
+        method: ALLAPI.updateTraderTrades.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            entryPrice,// optinal
+            takeProfit,// optinal
+            stopLoss,// optinal
+            swap // optinal
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+};
+
+export const HandleCloseTraderTrade = async (userId: string, traderAccountId: string, posiId: string, closeAmount?: number, closePrice?: number) => {
+    const config = {
+        url: ALLAPI.closeTraderTrade.url
+            .replace(":userId", userId)
+            .replace(":traderAccountId", traderAccountId)
+            .replace(":posiId", posiId),
+        method: ALLAPI.closeTraderTrade.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            closeAmount: closeAmount !== undefined ? closeAmount : undefined,
+            closePrice: closePrice !== undefined ? closePrice : undefined
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}

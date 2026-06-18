@@ -35,7 +35,6 @@ export const connectLiveTradesSocket = (
     onAccountPnL: (data: LiveAccountPnL) => void,
     onTradePnL: (data: LiveTradePnL) => void
 ): (() => void) => {
-    // Connect to the socket server
     const socket: Socket = io(LiveTradesSocket, {
         transports: ["websocket"],
         auth: {
@@ -45,7 +44,6 @@ export const connectLiveTradesSocket = (
 
     socket.on("connect", () => {
         console.log("Connected to LiveTradesSocket:", socket.id);
-        // Subscribe to trader account
         socket.emit("subscribe_trader_account", { traderAccountId });
     });
 
