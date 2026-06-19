@@ -17,7 +17,7 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("simple-menu"));
+  const menuStore = useAppSelector(selectMenu("side-menu"));
   const menu = () => nestedMenu(menuStore, location);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ function Main() {
                                       className={clsx([
                                         "side-menu__sub-icon",
                                         subMenu.activeDropdown &&
-                                          "transform rotate-180",
+                                        "transform rotate-180",
                                       ])}
                                     >
                                       <Lucide icon="ChevronDown" />

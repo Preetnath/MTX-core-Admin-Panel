@@ -28,9 +28,9 @@ type Variant =
 type AlertProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,
   {
-    children:
-      | React.ReactNode
-      | ((props: { dismiss: () => void }) => JSX.Element);
+    children?:
+    | React.ReactNode
+    | ((props: { dismiss: () => void }) => JSX.Element);
     dismissible?: boolean;
     variant?: Variant;
     onShow?: () => {};
@@ -186,10 +186,10 @@ const Alert: AlertComponent = forwardRef(
         >
           {typeof props.children === "function"
             ? props.children({
-                dismiss: () => {
-                  setShow(false);
-                },
-              })
+              dismiss: () => {
+                setShow(false);
+              },
+            })
             : props.children}
         </Component>
       </Transition>

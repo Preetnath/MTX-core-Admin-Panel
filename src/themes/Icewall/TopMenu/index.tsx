@@ -16,7 +16,7 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("top-menu"));
+  const menuStore = useAppSelector(selectMenu("side-menu"));
   const topMenu = () => nestedMenu(menuStore, location);
 
   useEffect(() => {
