@@ -202,7 +202,7 @@ export const HandleDisableDepositMethod = async (id: string) => {
     }
 }
 
-export const HandleGetAllDepositRequest = async (page: number = 1) => {
+export const HandleGetAllDepositRequest = async (page: number = 1, status?: string, traderAccountId?: string) => {
     const config = {
         url: ALLAPI.GetAllDepositRequest.url,
         method: ALLAPI.GetAllDepositRequest.method,
@@ -210,7 +210,11 @@ export const HandleGetAllDepositRequest = async (page: number = 1) => {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${access_token}`,
         },
-        params: { page }
+        params: {
+            page,
+            status: status ? status : undefined,
+            traderAccountId: traderAccountId ? traderAccountId : undefined
+        }
     }
     try {
         const { data: response }: { data: depostiRequestResponse } = await axios.request(config)

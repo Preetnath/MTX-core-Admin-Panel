@@ -82,6 +82,14 @@ function Deposit() {
     const [selectedRequest, setSelectedRequest] = useState<depositSingleRiquest | null>(null);
     const [adminComment, setAdminComment] = useState('');
     const [rejectionReason, setRejectionReason] = useState('');
+    const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
+
+    const handleStatusChange = (status: string | undefined) => {
+        setStatusFilter(status);
+        const updatedParams = new URLSearchParams(params);
+        updatedParams.set("page", "1");
+        setParams(updatedParams);
+    };
 
     const fetchMethods = async () => {
         setLoading(true);
@@ -100,7 +108,7 @@ function Deposit() {
     const fetchRequests = async () => {
         setLoadingRequests(true);
         try {
-            const res = await HandleGetAllDepositRequest(page);
+            const res = await HandleGetAllDepositRequest(page, statusFilter);
             if (res) {
                 setRequests(res.deposits || []);
                 setPagination(res.pagination || null);
@@ -118,7 +126,7 @@ function Deposit() {
 
     useEffect(() => {
         fetchRequests();
-    }, [page]);
+    }, [page, statusFilter]);
 
     const handleOpenManualDepositModal = () => {
         setManualTraderAccountId('');
@@ -424,12 +432,52 @@ function Deposit() {
             </div>
 
             {/* Deposit Requests Section */}
-            <div className="flex justify-between items-center mt-12 mb-5">
-                <h2 className="text-lg font-medium intro-y">Deposit Requests</h2>
+            <div className="flex flex-wrap items-center justify-between gap-4 mt-6 mb-1">
+                <div className="flex flex-wrap items-center gap-4">
+                    <h2 className="text-lg font-medium intro-y">Deposit Requests</h2>
+                </div>
                 <Button variant="primary" className="shadow-md flex items-center gap-2" onClick={handleOpenManualDepositModal}>
                     <Lucide icon="Plus" className="w-4 h-4" />
                     <span className='sm:block hidden' >Create Manual Deposit</span>
                 </Button>
+            </div>
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-darkmode-600 p-1 rounded-lg text-xs font-medium mb-2">
+                <button
+                    onClick={() => handleStatusChange(undefined)}
+                    className={clsx("px-3 py-1.5 rounded-md transition-all", {
+                        "bg-white dark:bg-darkmode-400 shadow-sm text-slate-800 dark:text-slate-200": statusFilter === undefined,
+                        "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200": statusFilter !== undefined
+                    })}
+                >
+                    All
+                </button>
+                <button
+                    onClick={() => handleStatusChange("PENDING")}
+                    className={clsx("px-3 py-1.5 rounded-md transition-all", {
+                        "bg-white dark:bg-darkmode-400 shadow-sm text-warning font-semibold": statusFilter === "PENDING",
+                        "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200": statusFilter !== "PENDING"
+                    })}
+                >
+                    Pending
+                </button>
+                <button
+                    onClick={() => handleStatusChange("APPROVED")}
+                    className={clsx("px-3 py-1.5 rounded-md transition-all", {
+                        "bg-white dark:bg-darkmode-400 shadow-sm text-success font-semibold": statusFilter === "APPROVED",
+                        "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200": statusFilter !== "APPROVED"
+                    })}
+                >
+                    Approved
+                </button>
+                <button
+                    onClick={() => handleStatusChange("REJECTED")}
+                    className={clsx("px-3 py-1.5 rounded-md transition-all", {
+                        "bg-white dark:bg-darkmode-400 shadow-sm text-danger font-semibold": statusFilter === "REJECTED",
+                        "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200": statusFilter !== "REJECTED"
+                    })}
+                >
+                    Rejected
+                </button>
             </div>
             <div className="grid grid-cols-12 gap-6 mb-10">
                 <div className="col-span-12">
