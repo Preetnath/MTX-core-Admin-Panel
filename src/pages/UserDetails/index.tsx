@@ -9,6 +9,7 @@ import TraderSpreadUpdate from '@/components/User/TraderSpreadUpdate';
 import Pendingtrades from '@/components/User/Pendingtrades';
 import TraderAccountHistory from '@/components/User/TraderAccountHistory';
 import LiveTrades from '@/components/User/LiveTrades';
+import TraderAccountDeposit from '@/components/User/TraderAccountDeposit';
 
 const topTab = [
     "Info",
@@ -18,9 +19,7 @@ const topTab = [
     "Live Trade",
     "Pending",
     "History",
-    "Commission",
-    "Trade",
-    "Wallet",
+    "Deposit"
 ]
 
 function index() {
@@ -133,6 +132,9 @@ function index() {
                 )}
                 {activeTab === "History" && (
                     <TraderAccountHistory accountId={accountId} />
+                )}
+                {activeTab === "Deposit" && (
+                    <TraderAccountDeposit accountId={accountId} />
                 )}
             </div>
         </div>
