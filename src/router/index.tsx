@@ -72,6 +72,7 @@ import UserTraderList from "../pages/UserTraderList";
 import UserDetails from "../pages/UserDetails";
 import Brokers from "../pages/Brokers";
 import Symbols from "../pages/Symbols";
+import Deposit from "../pages/Deposit";
 
 import Layout from "../themes";
 
@@ -99,14 +100,23 @@ function Router() {
           element: <UserDetails />,
         },
         {
+          path: "deposit",
+          element: <Deposit />,
+        },
+        {
           path: "brokers",
           element: <Brokers />,
         },
+
         {
           path: "symbols",
           element: <Symbols />,
         },
 
+
+
+
+        //old
         {
           path: "categories",
           element: <Categories />,

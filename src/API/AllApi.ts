@@ -134,6 +134,45 @@ const ALLAPI = {
         url: `${BaseURL}/brokers/:id`,
         method: "PUT",
     },
+
+    //DEPOSIT 
+    GetAllDepositMethods: {
+        url: `${BaseURL}/deposits/methods`,
+        method: "GET",
+    },
+    CreateDepositMethod: {
+        url: `${BaseURL}/deposits/methods`,
+        method: "POST",
+    },
+    UpdateDepositMethod: {
+        url: `${BaseURL}/deposits/methods/:id`,
+        method: "POST",
+    },
+    DisableDepositMethod: {
+        url: `${BaseURL}/deposits/methods/:id/disable`,
+        method: "PUT",
+    },
+    EnableDepositMethod: {
+        url: `${BaseURL}/deposits/methods/:id/enable`,
+        method: "PUT",
+    },
+
+    GetAllDepositRequest: {
+        url: `${BaseURL}/deposits/history`,
+        method: "GET",
+    },
+    CreateManuleDeposit: {
+        url: `${BaseURL}/deposits/manual`,
+        method: "POST",
+    },
+    ApproveDepositRequest: {
+        url: `${BaseURL}/deposits/requests/:id/approve`,
+        method: "POST",
+    },
+    RejectDepositRequest: {
+        url: `${BaseURL}/deposits/requests/:id/reject`,
+        method: "PUT",
+    },
 }
 
 export default ALLAPI

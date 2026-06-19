@@ -1,6 +1,8 @@
 import { type Menu } from "@/stores/menuSlice";
 
 const menu: Array<Menu | "divider"> = [
+
+  //new
   {
     icon: "Home",
     pathname: "/dashboard",
@@ -21,7 +23,13 @@ const menu: Array<Menu | "divider"> = [
     pathname: "/dashboard/symbols",
     title: "Symbols",
   },
+  {
+    icon: "CreditCard",
+    pathname: "/dashboard/deposit",
+    title: "Deposit",
+  },
 
+  //old
   {
     icon: "ShoppingBag",
     title: "E-Commerce",

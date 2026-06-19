@@ -7,7 +7,7 @@ import { FormInput, FormSelect } from "@/components/Base/Form";
 import Lucide from "@/components/Base/Lucide";
 import { Dialog, Menu } from "@/components/Base/Headless";
 import Table from "@/components/Base/Table";
-import { HandleApproveUser, HandleGetUsers, HandleRejectUser, HandleUpdateUserLeverage, UsersData } from "@/API/user";
+import { HandleApproveUser, HandleGetUsers, HandleRejectUser, UsersData } from "@/API/user";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ALLAPI from "@/API/AllApi";
