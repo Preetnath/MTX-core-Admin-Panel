@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --force
+RUN yarn
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 FROM nginx:1.25.4-alpine-slim as prod
 
