@@ -3,9 +3,15 @@ import Breadcrumb from "@/components/Base/Breadcrumb";
 import { Menu } from "@/components/Base/Headless";
 import _ from "lodash";
 import { UserIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
 
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    navigate("/login")
+  }
 
   return (
     <>
@@ -32,7 +38,7 @@ function Main() {
               </div>
             </Menu.Header>
             <Menu.Divider className="bg-white/[0.08]" />
-            <Menu.Item className="hover:bg-white/5 text-red-400">
+            <Menu.Item onClick={handleLogout} className="hover:bg-white/5 text-red-400">
               <Lucide icon="LogOut" className="w-4 h-4 mr-2" /> Logout
             </Menu.Item>
           </Menu.Items>
