@@ -434,8 +434,8 @@ function Deposit() {
 
                                         <div>
                                             {/* Card Header */}
-                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-darkmode-400/50 mb-4 pr-6">
-                                                <div className="flex items-center gap-3">
+                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-darkmode-400/50 mb-4 pr-2">
+                                                <div className="flex items-center gap-2">
                                                     <div className={clsx("w-8 h-8 rounded-full flex items-center justify-center", typeBg)}>
                                                         <Lucide icon={typeIcon as any} className="w-4 h-4" />
                                                     </div>
@@ -443,13 +443,13 @@ function Deposit() {
                                                         <div className="font-semibold text-slate-800 dark:text-slate-300 truncate max-w-[120px]" title={method.name}>
                                                             {method.name}
                                                         </div>
-                                                        <div className="text-[10px] text-slate-400 font-medium uppercase mt-0.5">{method.type.replace('_', ' ')}</div>
+                                                        <div className="text-[10px] text-slate-400 font-medium uppercase">{method.type.replace('_', ' ')}</div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             {/* Details Section */}
-                                            <div className="py-2">
+                                            <div className="py-1">
                                                 {renderDetails(method)}
                                             </div>
                                         </div>
