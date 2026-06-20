@@ -9,7 +9,8 @@ import {
     HandleApproveDepositRequest,
     HandleRejectDepositRequest,
     depositSingleRiquest,
-    HandleCreateDepositRequest
+    HandleCreateDepositRequest,
+    HandleUpdateDepositMethod
 } from '@/API/deposit';
 import Button from '@/components/Base/Button';
 import { FormInput, FormLabel, FormSelect, FormCheck } from '@/components/Base/Form';
@@ -39,6 +40,8 @@ function Deposit() {
     // Modal state
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [editingMethodId, setEditingMethodId] = useState<string | null>(null);
 
     // Form fields
     const [name, setName] = useState('');
@@ -222,6 +225,29 @@ function Deposit() {
 
     const handleOpenCreateModal = () => {
         resetForm();
+        setEditingMethodId(null);
+        setCreateModalOpen(true);
+    };
+
+    const handleOpenEditModal = (method: DepositMethod) => {
+        setEditingMethodId(method.id);
+        setName(method.name);
+        setType(method.type);
+        setIsActive(method.isActive);
+
+        const d = method.details || {};
+        setUpiId(d.upiId || '');
+        setUpiName(d.upiName || '');
+        setBankName(d.bankName || '');
+        setIfscCode(d.ifscCode || '');
+        setAccountNumber(d.accountNumber || '');
+        setAccountHolderName(d.accountHolderName || '');
+        setContactNumber(d.contactNumber || '');
+        setOfficeAddress(d.officeAddress || '');
+        setTokenName(d.tokenName || '');
+        setNetworkType(d.networkType || '');
+        setWalletAddress(d.walletAddress || '');
+
         setCreateModalOpen(true);
     };
 
@@ -281,11 +307,20 @@ function Deposit() {
 
         setIsSubmitting(true);
         try {
-            const res = await HandleCreateDepositMethod(name, type, details, isActive);
-            if (res) {
-                toast.success("Deposit method created successfully");
-                setCreateModalOpen(false);
-                fetchMethods();
+            if (editingMethodId) {
+                const res = await HandleUpdateDepositMethod(editingMethodId, name, type, details, isActive);
+                if (res) {
+                    toast.success("Deposit method updated successfully");
+                    setCreateModalOpen(false);
+                    fetchMethods();
+                }
+            } else {
+                const res = await HandleCreateDepositMethod(name, type, details, isActive);
+                if (res) {
+                    toast.success("Deposit method created successfully");
+                    setCreateModalOpen(false);
+                    fetchMethods();
+                }
             }
         } catch (err) {
             console.error(err);
@@ -377,27 +412,39 @@ function Deposit() {
                                 return (
                                     <div
                                         key={method.id}
-                                        className="col-span-12 sm:col-span-6 lg:col-span-3 intro-y box p-5 border border-slate-200/60 dark:border-darkmode-400 flex flex-col justify-between min-w-0"
+                                        className="relative overflow-hidden col-span-12 sm:col-span-6 lg:col-span-3 intro-y box p-5 border border-slate-200/60 dark:border-darkmode-400 flex flex-col justify-between min-w-0"
                                     >
+                                        <div
+                                            onClick={() => handleToggleStatus(method)}
+                                            className={clsx(
+                                                "absolute -top-1 right-0 w-full cursor-pointer select-none group"
+                                            )}
+                                            title={`Click to ${method.isActive ? "Disable" : "Enable"}`}
+                                        >
+                                            <div className={clsx(
+                                                "absolute transform rotate-45 text-center text-[9px] font-bold py-1 w-[90px] top-[12px] right-[-24px] shadow-sm transition-all group-hover:opacity-90",
+                                                {
+                                                    "bg-success text-white": method.isActive,
+                                                    "bg-danger text-white": !method.isActive
+                                                }
+                                            )}>
+                                                {method.isActive ? "Active" : "Inactive"}
+                                            </div>
+                                        </div>
+
                                         <div>
                                             {/* Card Header */}
-                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-darkmode-400/50 mb-4">
+                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-darkmode-400/50 mb-4 pr-6">
                                                 <div className="flex items-center gap-3">
                                                     <div className={clsx("w-8 h-8 rounded-full flex items-center justify-center", typeBg)}>
                                                         <Lucide icon={typeIcon as any} className="w-4 h-4" />
                                                     </div>
                                                     <div>
-                                                        <div className="font-semibold text-slate-800 dark:text-slate-300 truncate max-w-[150px]" title={method.name}>
+                                                        <div className="font-semibold text-slate-800 dark:text-slate-300 truncate max-w-[120px]" title={method.name}>
                                                             {method.name}
                                                         </div>
                                                         <div className="text-[10px] text-slate-400 font-medium uppercase mt-0.5">{method.type.replace('_', ' ')}</div>
                                                     </div>
-                                                </div>
-                                                <div className={clsx("flex items-center text-xs font-semibold px-2 py-0.5 rounded", {
-                                                    "bg-success/20 text-success": method.isActive,
-                                                    "bg-danger/20 text-danger": !method.isActive
-                                                })}>
-                                                    {method.isActive ? "Active" : "Inactive"}
                                                 </div>
                                             </div>
 
@@ -410,13 +457,13 @@ function Deposit() {
                                         {/* Actions Section */}
                                         <div className="mt-6 pt-4 border-t border-slate-100 dark:border-darkmode-400/50 flex justify-end">
                                             <Button
-                                                variant={method.isActive ? "outline-danger" : "outline-success"}
+                                                variant="outline-secondary"
                                                 size="sm"
-                                                onClick={() => handleToggleStatus(method)}
+                                                onClick={() => handleOpenEditModal(method)}
                                                 className="inline-flex items-center gap-1.5 w-full justify-center"
                                             >
-                                                <Lucide icon={method.isActive ? "ToggleRight" : "ToggleLeft"} className="w-4 h-4" />
-                                                {method.isActive ? "Disable Method" : "Enable Method"}
+                                                <Lucide icon="Pencil" className="w-4 h-4" />
+                                                Edit Method
                                             </Button>
                                         </div>
                                     </div>
@@ -707,7 +754,7 @@ function Deposit() {
             <Dialog open={createModalOpen} onClose={() => { setCreateModalOpen(false); }} size="lg">
                 <Dialog.Panel>
                     <div className="p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                        <h2 className="text-base font-medium">Create New Deposit Method</h2>
+                        <h2 className="text-base font-medium">{editingMethodId ? "Edit Deposit Method" : "Create New Deposit Method"}</h2>
                     </div>
                     <div className="p-5 grid grid-cols-12 gap-4">
                         <div className="col-span-12 sm:col-span-6">
@@ -895,11 +942,13 @@ function Deposit() {
                         <Button
                             variant="primary"
                             type="button"
-                            className="w-24"
+                            className="w-32"
                             onClick={handleSubmit}
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? "Creating..." : "Create"}
+                            {isSubmitting
+                                ? (editingMethodId ? "Saving..." : "Creating...")
+                                : (editingMethodId ? "Save Changes" : "Create")}
                         </Button>
                     </div>
                 </Dialog.Panel>

@@ -154,7 +154,7 @@ const ALLAPI = {
     },
     UpdateDepositMethod: {
         url: `${BaseURL}/deposits/methods/:id`,
-        method: "POST",
+        method: "PUT",
     },
     DisableDepositMethod: {
         url: `${BaseURL}/deposits/methods/:id/disable`,
