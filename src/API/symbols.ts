@@ -57,3 +57,54 @@ export const getSymbols = async () => {
         toast.error(err)
     }
 }
+
+
+export const updateSymbolSpread = async (id: string, spread: number) => {
+    const config = {
+        method: ALLAPI.updateSymbolSpread.method,
+        url: ALLAPI.updateSymbolSpread.url.replace(":id", id),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+            spread,
+        },
+    };
+    try {
+        const { data: response }: { data: Symbols } = await axios.request(config);
+        if (response) {
+            return response;
+        }
+    } catch (error) {
+        const err = useHandleError(error);
+        console.error(err);
+        toast.error(err);
+    }
+};
+export const updateSymbolSpikk = async (id: string, ask: number, bid: number, saveToDb: boolean, duration: number) => {
+    const config = {
+        method: ALLAPI.updateSymbolSpikk.method,
+        url: ALLAPI.updateSymbolSpikk.url.replace(":id", id),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+            ask,
+            bid,
+            saveToDb,
+            duration,
+        },
+    };
+    try {
+        const response = await axios.request(config);
+        if (response) {
+            return response.data;
+        }
+    } catch (error) {
+        const err = useHandleError(error);
+        console.error(err);
+        toast.error(err);
+    }
+};

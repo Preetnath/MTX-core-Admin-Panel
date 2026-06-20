@@ -23,6 +23,14 @@ const ALLAPI = {
         url: `${BaseURL}/symbols`,
         method: "GET",
     },
+    updateSymbolSpread: {
+        url: `${BaseURL}/symbols/:id`,
+        method: "PUT",
+    },
+    updateSymbolSpikk: {
+        url: `${BaseURL}/symbols/:id/override`,
+        method: "POST",
+    },
 
     //USERS
     getUsers: {
