@@ -75,6 +75,8 @@ import Symbols from "../pages/Symbols";
 import Deposit from "../pages/Deposit";
 import SystemSetting from "../pages/SystemSetting";
 import Support from "@/pages/Support";
+import IBProgramme from "@/pages/IBProgramme";
+import IBProgrammeUser from "@/pages/IBProgrammeUser";
 
 import Layout from "../themes";
 
@@ -109,7 +111,6 @@ function Router() {
           path: "brokers",
           element: <Brokers />,
         },
-
         {
           path: "symbols",
           element: <Symbols />,
@@ -121,6 +122,14 @@ function Router() {
         {
           path: "support",
           element: <Support />,
+        },
+        {
+          path: "ib-programme",
+          element: <IBProgramme />,
+        },
+        {
+          path: "ib-programme-user",
+          element: <IBProgrammeUser />,
         },
 
         //old

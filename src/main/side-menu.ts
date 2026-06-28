@@ -29,6 +29,11 @@ const menu: Array<Menu | "divider"> = [
     title: "Deposit",
   },
   {
+    icon: "CreditCard",
+    pathname: "/dashboard/ib-programme",
+    title: "IB Programme",
+  },
+  {
     icon: "MessageSquare",
     pathname: "/dashboard/support",
     title: "Support",

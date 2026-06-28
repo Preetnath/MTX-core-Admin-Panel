@@ -209,6 +209,40 @@ const ALLAPI = {
         method: "POST",
     },
 
+    //IB PROGRAM
+    GetAllIBRequests: {
+        url: `${BaseURL}/ib/requests/pending`,
+        method: "GET",
+    },
+    ApproveIbRequest: {
+        url: `${BaseURL}/ib/requests/:id/approve`,
+        method: "PUT",
+    },
+    RejectIbRequest: {
+        url: `${BaseURL}/ib/requests/:id/reject`,
+        method: "PUT",
+    },
+    GetSingleIbRequest: {
+        url: `${BaseURL}/ib/requests/:id`,
+        method: "GET",
+    },
+    GetAllIbWithdrawals: {
+        url: `${BaseURL}/ib/withdrawals`,
+        method: "GET",
+    },
+    ApproveIbWithdrawal: {
+        url: `${BaseURL}/ib/withdrawals/:id/approve`,
+        method: "PUT",
+    },
+    RejectIbWithdrawal: {
+        url: `${BaseURL}/ib/withdrawals/:id/reject`,
+        method: "PUT",
+    },
+    GetAllIbCommissions: {
+        url: `${BaseURL}/ib/commissions`,
+        method: "GET",
+    },
+
     //SYSTEM SETTING
     GetAllSystemSetting: {
         url: `${BaseURL}/settings`,
