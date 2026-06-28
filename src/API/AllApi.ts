@@ -187,6 +187,28 @@ const ALLAPI = {
         method: "PUT",
     },
 
+    // SUPPORT
+    GetAllSupportTickets: {
+        url: `${BaseURL}/support-tickets`,
+        method: "GET",
+    },
+    GetSingleSupportTicket: {
+        url: `${BaseURL}/support-tickets/:id`,
+        method: "GET",
+    },
+    GetSupportTicketReplies: {
+        url: `${BaseURL}/support-tickets/:id/replies`,
+        method: "GET",
+    },
+    UpdateSupportTicketStatus: {
+        url: `${BaseURL}/support-tickets/:id/status`,
+        method: "PUT",
+    },
+    SendSupportTicketReply: {
+        url: `${BaseURL}/support-tickets/:id/replies`,
+        method: "POST",
+    },
+
     //SYSTEM SETTING
     GetAllSystemSetting: {
         url: `${BaseURL}/settings`,

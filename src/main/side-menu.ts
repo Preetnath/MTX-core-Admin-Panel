@@ -29,6 +29,11 @@ const menu: Array<Menu | "divider"> = [
     title: "Deposit",
   },
   {
+    icon: "MessageSquare",
+    pathname: "/dashboard/support",
+    title: "Support",
+  },
+  {
     icon: "Settings",
     pathname: "/dashboard/system-setting",
     title: "System Setting",
