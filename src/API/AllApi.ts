@@ -175,7 +175,7 @@ const ALLAPI = {
     },
     ApproveDepositRequest: {
         url: `${BaseURL}/deposits/requests/:id/approve`,
-        method: "POST",
+        method: "PUT",
     },
     RejectDepositRequest: {
         url: `${BaseURL}/deposits/requests/:id/reject`,
