@@ -209,6 +209,20 @@ const ALLAPI = {
         method: "POST",
     },
 
+    //KYC
+    GetAllKycRequest: {
+        url: `${BaseURL}/kyc/pending`,
+        method: "GET",
+    },
+    ApproveKycRequest: {
+        url: `${BaseURL}/kyc/:id/approve`,
+        method: "PUT",
+    },
+    RejectKycRequest: {
+        url: `${BaseURL}/kyc/:id/reject`,
+        method: "PUT",
+    },
+
     //IB PROGRAM
     GetAllIBRequests: {
         url: `${BaseURL}/ib/requests/pending`,

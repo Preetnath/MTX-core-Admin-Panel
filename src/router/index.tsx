@@ -77,6 +77,7 @@ import SystemSetting from "../pages/SystemSetting";
 import Support from "@/pages/Support";
 import IBProgramme from "@/pages/IBProgramme";
 import IBProgrammeUser from "@/pages/IBProgrammeUser";
+import KYC from "@/pages/KYC";
 
 import Layout from "../themes";
 
@@ -130,6 +131,10 @@ function Router() {
         {
           path: "ib-programme-user",
           element: <IBProgrammeUser />,
+        },
+        {
+          path: "kyc",
+          element: <KYC />,
         },
 
         //old

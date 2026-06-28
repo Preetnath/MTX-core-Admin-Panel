@@ -30,6 +30,11 @@ const menu: Array<Menu | "divider"> = [
   },
   {
     icon: "CreditCard",
+    pathname: "/dashboard/kyc",
+    title: "KYC",
+  },
+  {
+    icon: "CreditCard",
     pathname: "/dashboard/ib-programme",
     title: "IB Programme",
   },
