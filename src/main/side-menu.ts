@@ -27,6 +27,11 @@ const menu: Array<Menu | "divider"> = [
     icon: "CreditCard",
     pathname: "/dashboard/deposit",
     title: "Deposit",
+  },
+  {
+    icon: "Settings",
+    pathname: "/dashboard/system-setting",
+    title: "System Setting",
   }
 ];
 

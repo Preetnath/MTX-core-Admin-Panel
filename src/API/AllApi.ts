@@ -186,6 +186,16 @@ const ALLAPI = {
         url: `${BaseURL}/deposits/requests/:id/reject`,
         method: "PUT",
     },
+
+    //SYSTEM SETTING
+    GetAllSystemSetting: {
+        url: `${BaseURL}/settings`,
+        method: "GET",
+    },
+    UpdateSystemSetting: {
+        url: `${BaseURL}/settings`,
+        method: "POST",
+    },
 }
 
 export default ALLAPI

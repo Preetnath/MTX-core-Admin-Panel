@@ -73,6 +73,7 @@ import UserDetails from "../pages/UserDetails";
 import Brokers from "../pages/Brokers";
 import Symbols from "../pages/Symbols";
 import Deposit from "../pages/Deposit";
+import SystemSetting from "../pages/SystemSetting";
 
 import Layout from "../themes";
 
@@ -111,6 +112,10 @@ function Router() {
         {
           path: "symbols",
           element: <Symbols />,
+        },
+        {
+          path: "system-setting",
+          element: <SystemSetting />,
         },
 
 
