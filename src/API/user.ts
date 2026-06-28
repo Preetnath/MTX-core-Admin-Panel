@@ -657,3 +657,51 @@ export const HandleCloseTraderTrade = async (userId: string, traderAccountId: st
         toast.error(err)
     }
 }
+
+export const HAndleCreateTradePosition = async (
+    userId: string,
+    traderAccountId: string,
+    symbol: string,
+    side: string, // BUY, SELL
+    lot: string,
+    entryPrice: string,
+    closePrice?: string, // optional
+    takeProfit?: string, // optional
+    stopLoss?: string, // optional
+    swap?: string, // optional
+    openedAt?: string, // optional
+    closedAt?: string, // optional
+) => {
+    const config = {
+        url: ALLAPI.CreaterTradePosition.url
+            .replace(":userId", userId)
+            .replace(":traderAccountId", traderAccountId),
+        method: ALLAPI.CreaterTradePosition.method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        data: {
+            symbol,
+            side,
+            lot: Number(lot),
+            entryPrice: Number(entryPrice),
+            closePrice: Number(closePrice),
+            takeProfit: Number(takeProfit),
+            stopLoss: Number(stopLoss),
+            swap: Number(swap),
+            openedAt,
+            closedAt,
+        }
+    }
+    try {
+        const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        console.error(err);
+        toast.error(err)
+    }
+}

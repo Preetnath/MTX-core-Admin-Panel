@@ -10,6 +10,7 @@ import Pendingtrades from '@/components/User/Pendingtrades';
 import TraderAccountHistory from '@/components/User/TraderAccountHistory';
 import LiveTrades from '@/components/User/LiveTrades';
 import TraderAccountDeposit from '@/components/User/TraderAccountDeposit';
+import CreateTradePosition from '@/components/User/CreateTradePosition';
 
 const topTab = [
     "Info",
@@ -18,6 +19,7 @@ const topTab = [
     "Spread",
     "Live Trade",
     "Pending",
+    "Create Trade",
     "History",
     "Deposit"
 ]
@@ -129,6 +131,9 @@ function index() {
                     ) : (
                         <Pendingtrades accountId={accountId} />
                     )
+                )}
+                {activeTab === "Create Trade" && (
+                    <CreateTradePosition userId={userId} accountId={accountId} />
                 )}
                 {activeTab === "History" && (
                     <TraderAccountHistory accountId={accountId} />

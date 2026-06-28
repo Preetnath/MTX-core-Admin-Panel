@@ -86,6 +86,7 @@ const ALLAPI = {
     },
 
 
+
     // TRADING ACCOUNT WALLET
     getUserWallet: {
         url: `${BaseURL}/users/:userId/wallet`,
@@ -117,6 +118,10 @@ const ALLAPI = {
     closeTraderTrade: {
         url: `${BaseURL}/users/:userId/trader-accounts/:traderAccountId/positions/:posiId/close`,
         method: "PUT",
+    },
+    CreaterTradePosition: {
+        url: `${BaseURL}/users/:userId/trader-accounts/:traderAccountId/positions`,
+        method: "POST",
     },
 
     //TRADE HISTORY 
