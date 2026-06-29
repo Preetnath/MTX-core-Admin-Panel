@@ -9,11 +9,16 @@ export interface LeverageSettingValues {
     standard: number,
     freasher_account: number
 }
+export interface Mt5Credentials {
+    login: number,
+    server: string,
+    password: string
+}
 
 
 export interface systemSetting {
-    key: "account_style_leverage" | "auto_approve_accounts" | "liquidation_level" | "margin_call_level",
-    value: LeverageSettingValues | boolean | number,
+    key: "account_style_leverage" | "mt5_credentials" | "auto_approve_accounts" | "liquidation_level" | "margin_call_level",
+    value: LeverageSettingValues | Mt5Credentials[] | boolean | number,
     createdAt: Date,
     updatedAt: Date
 }

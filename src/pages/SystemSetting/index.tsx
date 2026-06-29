@@ -7,8 +7,10 @@ import {
     HandleGetAllSystemSetting,
     HandleUpdateSystemSetting,
     systemSetting,
-    LeverageSettingValues
+    LeverageSettingValues,
+    Mt5Credentials
 } from '@/API/systemSetting';
+import { Dialog } from '@/components/Base/Headless';
 
 const leverageOptions = [
     { label: "1:100", value: 100 },
@@ -32,10 +34,21 @@ function index() {
     const [standardLeverage, setStandardLeverage] = useState<number>(200);
     const [freasherLeverage, setFreasherLeverage] = useState<number>(200);
     const [autoApprove, setAutoApprove] = useState<boolean>(false);
+    const [mt5Credentials, setMt5Credentials] = useState<Mt5Credentials[]>([]);
 
-    // Save loading states
+    // Save/Manage loading states
     const [savingLeverage, setSavingLeverage] = useState(false);
     const [savingAutoApprove, setSavingAutoApprove] = useState(false);
+    const [savingMt5, setSavingMt5] = useState(false);
+    const [mt5ModalOpen, setMt5ModalOpen] = useState(false);
+
+    // Temp copy for modal edits
+    const [tempCredentials, setTempCredentials] = useState<Mt5Credentials[]>([]);
+
+    // Form states for new credential
+    const [newLogin, setNewLogin] = useState<string>('');
+    const [newServer, setNewServer] = useState<string>('wss://web.metatrader.app/terminal');
+    const [newPassword, setNewPassword] = useState<string>('');
 
     const fetchSettings = async () => {
         setLoading(true);
@@ -58,6 +71,14 @@ function index() {
                 if (autoApproveSetting) {
                     setAutoApprove(!!autoApproveSetting.value);
                 }
+
+                // Initialize mt5 credentials
+                const mt5Setting = res.find(s => s.key === "mt5_credentials");
+                if (mt5Setting && Array.isArray(mt5Setting.value)) {
+                    setMt5Credentials(mt5Setting.value as Mt5Credentials[]);
+                } else {
+                    setMt5Credentials([]);
+                }
             }
         } catch (err) {
             console.error("Failed to load settings", err);
@@ -69,6 +90,53 @@ function index() {
     useEffect(() => {
         fetchSettings();
     }, []);
+
+    const handleOpenMt5Modal = () => {
+        setTempCredentials([...mt5Credentials]);
+        setNewLogin('');
+        setNewServer('wss://web.metatrader.app/terminal');
+        setNewPassword('');
+        setMt5ModalOpen(true);
+    };
+
+    const handleAddTempCredential = () => {
+        if (!newLogin.trim() || !newServer.trim() || !newPassword.trim()) {
+            toast.error("Please fill in all Mt5 Credential fields");
+            return;
+        }
+        const loginNum = Number(newLogin);
+        if (isNaN(loginNum)) {
+            toast.error("Login must be a number");
+            return;
+        }
+        setTempCredentials(prev => [
+            ...prev,
+            { login: loginNum, server: newServer, password: newPassword }
+        ]);
+        setNewLogin('');
+        setNewServer('wss://web.metatrader.app/terminal');
+        setNewPassword('');
+    };
+
+    const handleRemoveTempCredential = (index: number) => {
+        setTempCredentials(prev => prev.filter((_, idx) => idx !== index));
+    };
+
+    const handleSaveMt5Credentials = async () => {
+        setSavingMt5(true);
+        try {
+            const res = await HandleUpdateSystemSetting("mt5_credentials", tempCredentials);
+            if (res) {
+                toast.success("MT5 credentials updated successfully!");
+                setMt5Credentials(tempCredentials);
+                setMt5ModalOpen(false);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setSavingMt5(false);
+        }
+    };
 
     const updateLeverage = async () => {
         setSavingLeverage(true);
@@ -299,7 +367,151 @@ function index() {
                         </Button>
                     </div>
                 </div>
+
+                {/* Card 5: MT5 Credentials */}
+                <div className="col-span-12 lg:col-span-6 box p-5 shadow-sm border border-slate-200/60 dark:border-darkmode-400 flex flex-col justify-between">
+                    <div>
+                        <div className="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-3">
+                            <Lucide icon="Key" className="w-5 h-5 text-primary mr-2" />
+                            <h3 className="font-semibold text-base text-slate-700 dark:text-slate-300">MT5 Credentials</h3>
+                        </div>
+                        <p className="text-slate-500 text-xs mt-2 mb-4">
+                            Configure MT5 terminals and access credentials for execution.
+                        </p>
+
+                        <div className="mt-4 space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                            {mt5Credentials.length === 0 ? (
+                                <div className="text-center text-xs text-slate-405 py-6 border border-dashed border-slate-200 dark:border-darkmode-600 rounded">
+                                    No MT5 credentials configured.
+                                </div>
+                            ) : (
+                                mt5Credentials.map((cred, idx) => (
+                                    <div key={idx} className="flex flex-col gap-1 p-3 rounded-lg border border-slate-200 bg-slate-50/50 dark:bg-darkmode-700/30 dark:border-darkmode-600 text-xs">
+                                        <div className="flex justify-between">
+                                            <span className="font-semibold text-slate-700 dark:text-slate-300">#{idx + 1} | Login: {cred.login}</span>
+                                            <span className="text-slate-400 truncate max-w-[180px]" title={cred.server}>Server: {cred.server}</span>
+                                        </div>
+                                        <div className="text-slate-500">Password: <span className="font-mono">{cred.password}</span></div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                    <div className="mt-6 border-t border-slate-200/60 dark:border-darkmode-400 pt-4 flex justify-end">
+                        <Button
+                            variant="primary"
+                            type="button"
+                            onClick={handleOpenMt5Modal}
+                            className="w-32"
+                        >
+                            Manage
+                        </Button>
+                    </div>
+                </div>
             </div>
+
+            {/* MT5 Credentials Management Modal */}
+            <Dialog open={mt5ModalOpen} onClose={() => setMt5ModalOpen(false)}>
+                <Dialog.Panel className="p-6 max-w-lg w-full">
+                    <h3 className="text-lg font-semibold mb-4">Manage MT5 Terminals</h3>
+                    <p className="text-xs text-slate-500 mb-4">
+                        Add, remove, or edit your MT5 Metatrader access credentials.
+                    </p>
+
+                    {/* Current list in modal */}
+                    <div className="space-y-3 max-h-[200px] overflow-y-auto pr-1 mb-6 border-b pb-4 border-slate-100 dark:border-darkmode-600">
+                        <h4 className="text-xs font-semibold text-slate-500">Current Terminals</h4>
+                        {tempCredentials.length === 0 ? (
+                            <div className="text-center text-xs text-slate-400 py-4">
+                                No terminals added yet.
+                            </div>
+                        ) : (
+                            tempCredentials.map((cred, idx) => (
+                                <div key={idx} className="flex justify-between items-center bg-slate-50 dark:bg-darkmode-700 p-2.5 rounded border border-slate-200 dark:border-darkmode-600">
+                                    <div className="text-xs space-y-0.5 w-full pr-4">
+                                        <div className="font-semibold text-slate-800 dark:text-slate-200 flex flex-wrap gap-x-4">
+                                            <span>#{idx + 1} | Login: {cred.login}</span>
+                                            <span>Password: {cred.password}</span>
+                                        </div>
+                                        <div className="text-slate-500 truncate max-w-[340px]" title={cred.server}>
+                                            Server: {cred.server}
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveTempCredential(idx)}
+                                        className="text-danger hover:scale-105 transition-transform p-1.5"
+                                        title="Remove Terminal"
+                                    >
+                                        <Lucide icon="Trash2" className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                    {/* Add new credentials form */}
+                    <div className="space-y-4 bg-slate-50 dark:bg-darkmode-700/50 p-4 rounded-lg border border-slate-200 dark:border-darkmode-600 mb-6">
+                        <h4 className="text-xs font-bold flex items-center gap-1.5 text-slate-700 dark:text-slate-305">
+                            <Lucide icon="Plus" className="w-4 h-4 text-primary" /> Add New Terminal
+                        </h4>
+
+                        <div className="grid grid-cols-12 gap-3">
+                            <div className="col-span-12 sm:col-span-6">
+                                <label className="text-[11px] font-semibold text-slate-500">Login Number</label>
+                                <input
+                                    type="text"
+                                    value={newLogin}
+                                    onChange={(e) => setNewLogin(e.target.value)}
+                                    placeholder="e.g. 509283"
+                                    className="w-full mt-1 px-3 py-1.5 bg-white dark:bg-darkmode-800 border border-slate-200 dark:border-darkmode-600 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                            </div>
+                            <div className="col-span-12 sm:col-span-6">
+                                <label className="text-[11px] font-semibold text-slate-500">Password</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full mt-1 px-3 py-1.5 bg-white dark:bg-darkmode-800 border border-slate-200 dark:border-darkmode-600 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                            </div>
+                            <div className="col-span-12">
+                                <label className="text-[11px] font-semibold text-slate-500">MT5 Web Gateway URL / Server</label>
+                                <input
+                                    type="text"
+                                    value={newServer}
+                                    onChange={(e) => setNewServer(e.target.value)}
+                                    placeholder="wss://web.metatrader.app/terminal"
+                                    className="w-full mt-1 px-3 py-1.5 bg-white dark:bg-darkmode-800 border border-slate-200 dark:border-darkmode-600 rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <Button
+                                type="button"
+                                variant="primary"
+                                size="sm"
+                                onClick={handleAddTempCredential}
+                                className="flex items-center gap-1.5"
+                            >
+                                <Lucide icon="Plus" className="w-4 h-4" /> Add to List
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-4 border-t border-slate-100 dark:border-darkmode-600">
+                        <Button type="button" variant="outline-secondary" onClick={() => setMt5ModalOpen(false)} disabled={savingMt5}>
+                            Cancel
+                        </Button>
+                        <Button type="button" variant="primary" onClick={handleSaveMt5Credentials} disabled={savingMt5}>
+                            {savingMt5 ? "Saving..." : "Confirm & Save"}
+                        </Button>
+                    </div>
+                </Dialog.Panel>
+            </Dialog>
         </div>
     );
 }
