@@ -44,6 +44,11 @@ const menu: Array<Menu | "divider"> = [
     title: "IB Withdraw Request",
   },
   {
+    icon: "Coins",
+    pathname: "/dashboard/ib-commisions",
+    title: "IB Commissions",
+  },
+  {
     icon: "MessageSquare",
     pathname: "/dashboard/support",
     title: "Support",

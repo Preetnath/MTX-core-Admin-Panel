@@ -79,6 +79,7 @@ import IBProgramme from "@/pages/IBProgramme";
 import IBProgrammeUser from "@/pages/IBProgrammeUser";
 import KYC from "@/pages/KYC";
 import IBWithdrawRequest from "@/pages/IBWithdrawRequest";
+import IBCommissions from "@/pages/IBCommissions";
 
 import Layout from "../themes";
 
@@ -140,6 +141,10 @@ function Router() {
         {
           path: "ib-withdraw-request",
           element: <IBWithdrawRequest />,
+        },
+        {
+          path: "ib-commisions",
+          element: <IBCommissions />,
         },
 
         //old

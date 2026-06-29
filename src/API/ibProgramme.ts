@@ -86,6 +86,35 @@ export interface User {
 }
 
 
+export interface IBICommissionsItem {
+    id: string,
+    ibProfileId: string,
+    ibUser: {
+        id: string,
+        email: string,
+        firstName: string,
+        lastName: string
+    },
+    client: {
+        id: string,
+        email: string,
+        firstName: string,
+        lastName: string
+    },
+    traderAccountId: number,
+    tradeId: string,
+    level: number,
+    amountUSD: number,
+    volume: number,
+    createdAt: Date
+}
+
+export interface IBICommissionsRes {
+    data: IBICommissionsItem[]
+    pagination: pagination
+}
+
+
 export const GetAllIBRequests = async (page: number = 1) => {
     const config = {
         url: ALLAPI.GetAllIBRequests.url,
@@ -238,6 +267,29 @@ export const HandleRejectIbWithdrawal = async (id: string, rejectionReason: stri
     }
     try {
         const { data: response }: { data: any } = await axios.request(config)
+        if (response) {
+            return response;
+        }
+    } catch (error) {
+        const err = useHandleError(error)
+        toast.error(err)
+    }
+}
+
+export const HandleGetIbCommissions = async (page: number = 1) => {
+    const config = {
+        url: ALLAPI.GetAllIbCommissions.url,
+        method: ALLAPI.GetAllIbCommissions.method,
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json"
+        },
+        params: {
+            page
+        }
+    }
+    try {
+        const { data: response }: { data: IBICommissionsRes } = await axios.request(config)
         if (response) {
             return response;
         }
