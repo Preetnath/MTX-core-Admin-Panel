@@ -78,6 +78,7 @@ import Support from "@/pages/Support";
 import IBProgramme from "@/pages/IBProgramme";
 import IBProgrammeUser from "@/pages/IBProgrammeUser";
 import KYC from "@/pages/KYC";
+import IBWithdrawRequest from "@/pages/IBWithdrawRequest";
 
 import Layout from "../themes";
 
@@ -135,6 +136,10 @@ function Router() {
         {
           path: "kyc",
           element: <KYC />,
+        },
+        {
+          path: "ib-withdraw-request",
+          element: <IBWithdrawRequest />,
         },
 
         //old

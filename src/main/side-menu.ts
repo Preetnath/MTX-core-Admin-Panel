@@ -24,19 +24,24 @@ const menu: Array<Menu | "divider"> = [
     title: "Symbols",
   },
   {
-    icon: "CreditCard",
+    icon: "PiggyBank",
     pathname: "/dashboard/deposit",
     title: "Deposit",
   },
   {
-    icon: "CreditCard",
+    icon: "FileText",
     pathname: "/dashboard/kyc",
     title: "KYC",
   },
   {
-    icon: "CreditCard",
+    icon: "Users",
     pathname: "/dashboard/ib-programme",
     title: "IB Programme",
+  },
+  {
+    icon: "Banknote",
+    pathname: "/dashboard/ib-withdraw-request",
+    title: "IB Withdraw Request",
   },
   {
     icon: "MessageSquare",

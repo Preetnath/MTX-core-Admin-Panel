@@ -15,7 +15,7 @@ interface upiDetails {
     upiId: string,
     upiName: string
 }
-interface bankWireDetails {
+export interface bankWireDetails {
     bankName: string,
     ifscCode: string,
     accountNumber: string,
@@ -25,7 +25,7 @@ interface cashDetails {
     contactNumber: string,
     officeAddress: string
 }
-interface cryptoDetails {
+export interface cryptoDetails {
     tokenName: string,
     networkType: string,
     walletAddress: string
