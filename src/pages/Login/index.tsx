@@ -44,7 +44,7 @@ function Main() {
           <div className="relative z-10">
             <div className="flex items-center gap-3">
               <img alt="Logo" className="w-10" src={logoUrl} />
-              <span className="text-2xl font-bold text-white tracking-tight">MTX Core</span>
+              <span className="text-2xl font-bold text-white tracking-tight">GPROFX CAPITAL</span>
             </div>
             <div className="mt-20">
               <h1 className="text-5xl font-extrabold text-white leading-tight">
@@ -137,7 +137,7 @@ function Main() {
 
             <div className="mt-12 pt-8 border-t border-slate-100 dark:border-darkmode-400 text-center">
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Check all the details of MTX Core. <br />
+                Check all the details of GPROFX CAPITAL. <br />
               </p>
             </div>
           </div>

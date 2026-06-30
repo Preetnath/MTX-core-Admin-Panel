@@ -44,7 +44,7 @@ function Main() {
           <Link to="/" className="flex items-center pt-4 pl-5 mt-3 intro-x">
             <Lucide icon="BarChart" className="w-6 h-6 text-white" />
             <span className="hidden ml-3 text-lg text-white xl:block">
-              MTX Core
+              GPROFX CAPITAL
             </span>
           </Link>
           <div className="my-6 side-nav__divider"></div>

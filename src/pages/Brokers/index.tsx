@@ -206,7 +206,7 @@ function Brokers() {
                                 id="name"
                                 name="name"
                                 type="text"
-                                placeholder="eg. MTX Broker"
+                                placeholder="eg. Gprofx Broker"
                                 value={formData.name}
                                 onChange={handleInputChange}
                             />
