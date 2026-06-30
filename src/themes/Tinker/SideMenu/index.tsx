@@ -7,7 +7,6 @@ import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./side-menu";
 import Tippy from "@/components/Base/Tippy";
 import Lucide from "@/components/Base/Lucide";
-import logoUrl from "@/assets/images/logo.svg";
 import clsx from "clsx";
 import TopBar from "@/components/Themes/Tinker/TopBar";
 import MobileMenu from "@/components/MobileMenu";
@@ -42,9 +41,9 @@ function Main() {
         {/* BEGIN: Side Menu */}
         <nav className="side-nav hidden md:block md:w-[100px] xl:w-[250px] px-5 pb-16 overflow-x-hidden z-10">
           <Link to="/" className="flex items-center pt-4 pl-5 mt-3 intro-x">
-            <Lucide icon="BarChart" className="w-6 h-6 text-white" />
+            <img src="../../public/pngLogo.png" alt="" className="w-10" />
             <span className="hidden ml-3 text-lg text-white xl:block">
-              GPROFX CAPITAL
+              GPROFX
             </span>
           </Link>
           <div className="my-6 side-nav__divider"></div>

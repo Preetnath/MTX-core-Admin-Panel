@@ -9,7 +9,7 @@ import { selectTheme } from "@/stores/themeSlice";
 import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./mobile-menu";
 import Lucide from "@/components/Base/Lucide";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "../../../public/pngLogo.png";
 import clsx from "clsx";
 import SimpleBar from "simplebar";
 
@@ -48,7 +48,7 @@ function Main() {
           <a href="" className="flex mr-auto">
             <img
               alt="Midone Tailwind HTML Admin Template"
-              className="w-6"
+              className="w-10"
               src={logoUrl}
             />
           </a>
@@ -158,7 +158,7 @@ function Main() {
                                     className={clsx([
                                       "menu__sub-icon",
                                       subMenu.activeDropdown &&
-                                        "transform rotate-180",
+                                      "transform rotate-180",
                                     ])}
                                   >
                                     <Lucide icon="ChevronDown" />

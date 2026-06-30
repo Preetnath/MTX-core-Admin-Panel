@@ -1,11 +1,11 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import logoUrl from "@/assets/images/logo.svg";
 import { FormInput, FormCheck } from "@/components/Base/Form";
 import Button from "@/components/Base/Button";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/API/auth";
 import { updateToken } from "@/API/AllApi";
+import Logo from "../../../public/pngLogo.png"
 
 function Main() {
   const [email, setEmail] = useState("");
@@ -43,7 +43,7 @@ function Main() {
         <div className="hidden lg:flex flex-col justify-between p-12 bg-primary relative overflow-hidden">
           <div className="relative z-10">
             <div className="flex items-center gap-3">
-              <img alt="Logo" className="w-10" src={logoUrl} />
+              <img alt="Logo" className="w-10" src={"/pngLogo.png"} />
               <span className="text-2xl font-bold text-white tracking-tight">GPROFX CAPITAL</span>
             </div>
             <div className="mt-20">
@@ -70,7 +70,7 @@ function Main() {
         <div className="flex flex-col justify-center p-8 sm:p-16 lg:p-20">
           <div className="max-w-md mx-auto w-full">
             <div className="mb-10 lg:hidden flex justify-center">
-              <img alt="Logo" className="w-12" src={logoUrl} />
+              <img alt="Logo" className="w-12" src={Logo} />
             </div>
 
             <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
